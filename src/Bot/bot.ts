@@ -2,7 +2,6 @@ import { Telegraf } from "telegraf";
 import dotenv from "dotenv"
 import {useActionInlineKeyboard, useHandlers, useHearsReplyKeyboard} from "./handlers/handlerFactory";
 import setStart from "./handlers/start";
-import { setHello } from "./handlers/utils";
 import accountHandler from "./handlers/keyboards/reply/account";
 import startAction from "./handlers/keyboards/inline/start";
 

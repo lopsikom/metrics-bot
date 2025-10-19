@@ -1,6 +1,5 @@
 import { Telegraf } from "telegraf";
 import { Markup } from "telegraf";
-import ReplyKeyboardEvents from "../models/keyboards/replyEnum";
 import inlineKeyboardEvent from "../models/keyboards/inlineEnum";
 
 const setStart = (bot : Telegraf) => {

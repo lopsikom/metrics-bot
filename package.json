@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^6.17.1",
     "@types/eslint": "^9.6.1",
     "@types/node": "^24.5.2",
     "@types/prettier": "^2.7.3",
@@ -29,6 +30,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.4.0",
     "prettier": "^3.6.2",
+    "prisma": "^6.17.1",
     "tsx": "^4.20.6",
     "typescript-eslint": "^8.46.1"
   }
