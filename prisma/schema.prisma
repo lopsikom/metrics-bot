@@ -8,24 +8,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users{
-  id String @id @default(uuid()) @db.Uuid
-  telegram_id String @unique
-  first_name String
-  second_name String
-  login String
-  
-  Servers Servers[]
+model Users {
+  id          String    @id @default(uuid()) @db.Uuid
+  telegram_id String    @unique
+  first_name  String
+  second_name String?
+  login       String?
+  Servers     Servers[]
+
   @@map("users")
 }
-model Servers{
-  id String @id @default(uuid()) @db.Uuid
-  name String @unique
-  host String
+
+model Servers {
+  id       String @id @default(uuid()) @db.Uuid
+  name     String @unique
+  host     String
   endpoint String
-  user_id String @db.Uuid
-  user Users @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id  String @db.Uuid
+  user     Users  @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("servers")
-  
 }

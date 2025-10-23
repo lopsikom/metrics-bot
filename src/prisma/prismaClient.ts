@@ -1,12 +1,12 @@
-import { PrismaClient } from "./generated/prisma";
+import { PrismaClient, Users } from "./generated/prisma";
 
 class prismaClient {
     private prisma : PrismaClient
     constructor(){
         this.prisma = new PrismaClient();
     }
-    createNewUser(id : string, first_name : string, second_name : string, login : string){
-        this.prisma.users.create({
+    async createNewUser(id : string, first_name : string, second_name? : string, login? : string) : Promise<Users | undefined>{
+        const response = this.prisma.users.create({
             data : {
                 telegram_id : id,
                 first_name : first_name,
@@ -14,8 +14,19 @@ class prismaClient {
                 login : login
             }
         })
-        .then(() => this.prisma.$disconnect())
-        .catch(e => console.error(e))
+        return response
+    }
+    async getUserByTgId(id : string) : Promise<Users | null>{
+        const response = await this.prisma.users.findFirst({
+            where : {telegram_id : id}
+        })
+        return response
+    }
+    async getUserById(id : string) : Promise<Users | null>{
+        const response = await this.prisma.users.findFirst({
+            where : {id : id}
+        })
+        return response
     }
 }
 
