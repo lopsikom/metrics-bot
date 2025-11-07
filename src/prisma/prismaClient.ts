@@ -6,7 +6,7 @@ class prismaClient {
         this.prisma = new PrismaClient();
     }
     async createNewUser(id : string, first_name : string, second_name? : string, login? : string) : Promise<Users | undefined>{
-        const response = this.prisma.users.create({
+        const response = await this.prisma.users.create({
             data : {
                 telegram_id : id,
                 first_name : first_name,
@@ -25,6 +25,14 @@ class prismaClient {
     async getUserById(id : string) : Promise<Users | null>{
         const response = await this.prisma.users.findFirst({
             where : {id : id}
+        })
+        return response
+    }
+    async getServersCountUser(id : string) : Promise<number>{
+        const response = await this.prisma.servers.count({
+            where : {
+                user_id : id
+            }
         })
         return response
     }

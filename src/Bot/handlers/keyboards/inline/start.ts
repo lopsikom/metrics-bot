@@ -1,8 +1,8 @@
 import { Markup } from "telegraf";
-import KeyboardHandler from "../../../models/keyboards/keyboardHandler";
-import ReplyKeyboardEvents from "../../../models/keyboards/replyEnum";
-import inlineKeyboardEvent from "../../../models/keyboards/inlineEnum";
-import prisma from "../../../../prisma/prismaClient";
+import KeyboardHandler from "@botModels/keyboards/keyboardHandler";
+import ReplyKeyboardEvents from "@botModels/keyboards/replyEnum";
+import inlineKeyboardEvent from "@botModels/keyboards/inlineEnum";
+import prisma from "@prisma/prismaClient";
 
 const startAction : KeyboardHandler = {
     title : inlineKeyboardEvent.START,
