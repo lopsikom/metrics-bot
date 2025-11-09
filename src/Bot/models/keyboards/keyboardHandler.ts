@@ -1,8 +1,9 @@
-import { Context } from "telegraf";
+import WizardUserContext from "@botModels/userContext";
+
 
 interface KeyboardHandler {
     title : string;
-    handler : (ctx : Context) => void;
+    handler : (ctx : WizardUserContext) => void;
 }
 
 export default KeyboardHandler

@@ -7,7 +7,7 @@ export default async function userMiddleware(ctx : userContext, next: () => Prom
     console.log("Midlle")
     if(!tgId) return next();
 
-    const sessionUserId = ctx.session?.userId as string | undefined;
+    const sessionUserId = ctx.sessionUser?.userId as string | undefined;
     if(sessionUserId){
         const user = await prisma.getUserById(sessionUserId);
         console.log(user)
@@ -28,8 +28,8 @@ export default async function userMiddleware(ctx : userContext, next: () => Prom
     const user = await prisma.createNewUser(ctx.from.id.toString(), ctx.from.first_name, ctx.from.last_name, ctx.from.username)
 
     ctx.user = user
-    ctx.session = ctx.session ?? {}
-    ctx.session.userId = user?.id
+    ctx.sessionUser = ctx.session ?? {}
+    ctx.sessionUser.userId = user?.id
     return next();
     
 }

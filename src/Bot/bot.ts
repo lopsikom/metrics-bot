@@ -1,24 +1,27 @@
 import { Telegraf } from "telegraf";
 import dotenv from "dotenv"
-import {useActionInlineKeyboard, useHandlers, useHearsReplyKeyboard} from "./handlers/handlerFactory";
+import {useActionInlineKeyboard, useHandlers, useHearsReplyKeyboard, useWizardScene} from "./handlers/handlerFactory";
 import setStart from "./handlers/start";
 import accountHandler from "./handlers/keyboards/reply/account";
 import startAction from "./handlers/keyboards/inline/start";
 import userMiddleware from "./middlewares/userMiddleware";
-import userContext from "./models/userContext";
+import WizardUserContext from "./models/userContext";
 import helpHandler from "./handlers/keyboards/reply/help";
 import howToStartAction from "./handlers/keyboards/inline/howToStart";
+import serverHandler from "./handlers/keyboards/reply/servers";
+import addServer from "./Scenes/addServer";
+import addServerInline from "./handlers/keyboards/inline/addServer";
 
 dotenv.config()
 
-const bot = new Telegraf<userContext>(process.env.BOT_TOKEN ?? "")
+const bot = new Telegraf<WizardUserContext>(process.env.BOT_TOKEN ?? "")
 //Команды до подключения основого middleware
 setStart(bot)
 useActionInlineKeyboard(bot, startAction)
-
 bot.use(userMiddleware)
+useWizardScene(bot, addServer)
 useHandlers(bot)
-useHearsReplyKeyboard(bot, accountHandler, helpHandler)
-useActionInlineKeyboard(bot, howToStartAction)
+useHearsReplyKeyboard(bot, accountHandler, helpHandler, serverHandler)
+useActionInlineKeyboard(bot, howToStartAction, addServerInline)
 
 export default bot

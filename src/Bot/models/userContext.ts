@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Context } from "telegraf";
+import { Context, Scenes } from "telegraf";
 import { Users } from "../../prisma/generated/prisma";
 
 
-export default interface userContext extends Context{
+export interface userContext extends Context{
     user? : Users
-    session? : Record<string, any>
+    sessionUser? : Record<string, any>
 }
+
+export default interface WizardUserContext extends userContext, Scenes.WizardContext {}
+
+

@@ -1,20 +1,28 @@
-import { Telegraf } from "telegraf"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Scenes, session, Telegraf } from "telegraf"
 import KeyboardHandler from "../models/keyboards/keyboardHandler"
+import { WizardScene } from "telegraf/typings/scenes"
+import WizardUserContext from "@botModels/userContext"
 
 
-export const useHandlers = (bot : Telegraf, ...args : ((bot : Telegraf) => void)[]) =>{
+export const useHandlers = (bot : Telegraf<WizardUserContext>, ...args : ((bot : Telegraf<WizardUserContext>) => void)[]) =>{
     args.forEach(handler => {
        handler(bot)
     })
 }
 
-export const useHearsReplyKeyboard = (bot : Telegraf, ...args : KeyboardHandler[]) =>{
+export const useHearsReplyKeyboard = (bot : Telegraf<WizardUserContext>, ...args : KeyboardHandler[]) =>{
     args.forEach(handler =>{
         bot.hears(handler.title, handler.handler)
     })
 }
-export const useActionInlineKeyboard = (bot: Telegraf, ...args: KeyboardHandler[]) =>{
+export const useActionInlineKeyboard = (bot: Telegraf<WizardUserContext>, ...args: KeyboardHandler[]) =>{
     args.forEach(action =>{
         bot.action(action.title, action.handler)
     })
+}
+export const useWizardScene = (bot: Telegraf<WizardUserContext>, ...args: WizardScene<any>[]) =>{
+    const stage = new Scenes.Stage(args)
+    bot.use(session())
+    bot.use(stage.middleware())
 }
