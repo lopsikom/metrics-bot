@@ -10,7 +10,9 @@ const serverHandler : KeyboardHandler = {
         const servers = await prisma.getUserServers(ctx.user?.id ?? '')
         if(servers.length > 0){
             ctx.reply(`Общее количество серверов: ${servers.length}\n${servers.map(h => `${h.name}:${h.host}`).join("\n")}`,
-        Markup.inlineKeyboard([[Markup.button.callback('Добавить сервер', inlineKeyboardEvent.ADD_SERVER)], [Markup.button.callback('Удалить сервер',inlineKeyboardEvent.DELETE_SERVER)]]))
+        Markup.inlineKeyboard([...servers.map(s => [Markup.button.callback(`${s.name}`, `SELECT_SERVER_${s.id}`)]), 
+        [Markup.button.callback('Добавить сервер', inlineKeyboardEvent.ADD_SERVER)]]))
+        
         }
         else{
             ctx.reply("Подключенных серверов нету",Markup.inlineKeyboard([[Markup.button.callback('Добавить сервер', inlineKeyboardEvent.ADD_SERVER)]]))

@@ -20,7 +20,7 @@ const scene = new Scenes.WizardScene<any>("add_server",
     prisma.addServer(ctx.user?.id, ctx.wizard.state.name, ctx.wizard.state.server_ip, ctx.wizard.state.endpoint)
     prometheus.addTargetConfig(ctx.wizard.state.server_ip)
     ctx.reply(`${ctx.wizard.state.name} по адресу ${ctx.wizard.state.server_ip}${ctx.wizard.state.endpoint} успешно зарегистрирован`)
-    return ctx.wizard.leave()
+    return ctx.scene.leave()
 })
 
 export default scene

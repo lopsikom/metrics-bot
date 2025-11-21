@@ -19,6 +19,8 @@ export default async function userMiddleware(ctx : userContext, next: () => Prom
     else{
         const user = await prisma.getUserByTgId(tgId.toString());
         console.log(user)
+        //     console.log(ctx)
+        // console.log(ctx.callbackQuery)
         if(user){
             ctx.user = user;
             return next();

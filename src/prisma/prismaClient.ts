@@ -44,6 +44,14 @@ class prismaClient {
         })
         return response
     }
+    async getServer(id : string) : Promise<Servers | null>{
+        const response = await this.prisma.servers.findFirst({
+            where : {
+                id : id
+            }
+        })
+        return response
+    }
     async addServer(user_id : string, name : string, server_ip : string, endpoint : string) {
         await this.prisma.servers.create({
             data : {
@@ -53,7 +61,14 @@ class prismaClient {
                 endpoint : endpoint
             }
         })
-    } 
+    }
+    async deleteServer(id : string) {
+        await this.prisma.servers.deleteMany({
+            where : {
+                id : id
+            }
+        })
+    }
 }
 
 const prisma = new prismaClient()
