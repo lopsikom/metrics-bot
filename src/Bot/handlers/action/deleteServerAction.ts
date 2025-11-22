@@ -12,7 +12,7 @@ const deleteServerAction : actionHandler = {
         const server = await prisma.getServer(serverId)
         if(!server) return
         prisma.deleteServer(serverId)
-        prometheus.removeTargeConfig(server.host)
+        prometheus.removeTargeConfig(server.host, ctx.user!.first_name)
         await ctx.reply("Сервер удалён")
         return serverHandler.handler(ctx)
     }

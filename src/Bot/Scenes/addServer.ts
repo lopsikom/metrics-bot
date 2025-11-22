@@ -3,7 +3,7 @@ import prometheus from "@prometheus/prometheus";
 import { Scenes } from "telegraf";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const scene = new Scenes.WizardScene<any>("add_server",
+const scene = new Scenes.WizardScene<any>("add_server", //Добавить валидатор значений
     (ctx) => {
     ctx.reply('Введите название сервера')
     return ctx.wizard.next()
@@ -18,7 +18,7 @@ const scene = new Scenes.WizardScene<any>("add_server",
 }, (ctx) =>{
     ctx.wizard.state.endpoint = ctx.message!.text
     prisma.addServer(ctx.user?.id, ctx.wizard.state.name, ctx.wizard.state.server_ip, ctx.wizard.state.endpoint)
-    prometheus.addTargetConfig(ctx.wizard.state.server_ip)
+    prometheus.addTargetConfig(ctx.wizard.state.server_ip, ctx.user!.first_name)
     ctx.reply(`${ctx.wizard.state.name} по адресу ${ctx.wizard.state.server_ip}${ctx.wizard.state.endpoint} успешно зарегистрирован`)
     return ctx.scene.leave()
 })
