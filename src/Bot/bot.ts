@@ -13,6 +13,7 @@ import addServer from "./Scenes/addServer";
 import addServerInline from "./handlers/keyboards/inline/addServer";
 import serverAction from "./handlers/action/serverAction";
 import deleteServerAction from "./handlers/action/deleteServerAction";
+import metricServerAction from "./handlers/action/metricServeraAction";
 
 dotenv.config()
 
@@ -22,7 +23,7 @@ setStart(bot)
 useActionInlineKeyboard(bot, startAction)
 bot.use(userMiddleware)
 useWizardScene(bot, addServer)
-useAction(bot, serverAction, deleteServerAction)
+useAction(bot, serverAction, deleteServerAction, metricServerAction)
 useHandlers(bot)
 useHearsReplyKeyboard(bot, accountHandler, helpHandler, serverHandler)
 useActionInlineKeyboard(bot, howToStartAction, addServerInline)

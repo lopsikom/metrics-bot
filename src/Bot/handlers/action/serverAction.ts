@@ -1,5 +1,4 @@
 import actionHandler from "@botModels/actionHandler";
-import inlineKeyboardEvent from "@botModels/keyboards/inlineEnum";
 import prisma from "@prisma/prismaClient";
 import getDataFromRegEx from "Bot/utils/getDataFromRegEx";
 import { Markup } from "telegraf";
@@ -14,7 +13,7 @@ const serverAction : actionHandler = { //Пофиксить типы
         if(!server) ctx.reply("Сервер не найден")
         console.log(server)
         ctx.reply(`Сервер: ${server?.name}\nАдрес: ${server?.host}\nПуть: ${server?.endpoint}`,
-           Markup.inlineKeyboard([[Markup.button.callback("Метрики сервера", inlineKeyboardEvent.METRICS_SERVER)], [Markup.button.callback("Удалить сервер", `DELETE_SERVER_${server?.id}`)]]) 
+           Markup.inlineKeyboard([[Markup.button.callback("Метрики сервера", `SERVER_METRICS_${server?.host}`)], [Markup.button.callback("Удалить сервер", `DELETE_SERVER_${server?.id}`)]]) 
         )
 
     }

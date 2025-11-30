@@ -5,13 +5,11 @@ import { targetsPrometheus } from '@prometheus/models/targetsPrometheus'
 
 dotenv.config()
 
-class Prometheus { //Придумать как передавать user_name (мб через редис)
+class PrometheusConfig { //Придумать как передавать user_name (мб через редис)
     private BASE_PATH : string
     private TARGETS_PATH : string
-    private CONFIG_PATH : string
     constructor(){
         this.BASE_PATH = process.env.PATH_CONFIG ?? ""
-        this.CONFIG_PATH = this.BASE_PATH + "/prometheus.yml"
         this.TARGETS_PATH = this.BASE_PATH + "/targets"
     }
 
@@ -51,4 +49,4 @@ class Prometheus { //Придумать как передавать user_name (�
 
 }
 
-export default new Prometheus()
+export default new PrometheusConfig()

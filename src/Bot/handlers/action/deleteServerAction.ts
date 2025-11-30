@@ -1,6 +1,6 @@
 import actionHandler from "@botModels/actionHandler";
 import prisma from "@prisma/prismaClient";
-import prometheus from "@prometheus/prometheus";
+import prometheus from "@prometheus/prometheusConfig";
 import getDataFromRegEx from "Bot/utils/getDataFromRegEx";
 import serverHandler from "../keyboards/reply/servers";
 

@@ -1,5 +1,5 @@
 import prisma from "@prisma/prismaClient";
-import prometheus from "@prometheus/prometheus";
+import prometheus from "@prometheus/prometheusConfig";
 import { Scenes } from "telegraf";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,10 +13,11 @@ const scene = new Scenes.WizardScene<any>("add_server", //Добавить ва�
     return ctx.wizard.next()
 }, (ctx) =>{
     ctx.wizard.state.server_ip = ctx.message!.text 
-    ctx.reply("Введите эндпоинт по которому посылаются метрики\nНапример: /metrics")
+    ctx.reply("Введите эндпоинт по которому посылаются метрики\nНапример: /prometheus\nИли 'Нету' если нет конкретного эндпоинта")
     return ctx.wizard.next()
 }, (ctx) =>{
-    ctx.wizard.state.endpoint = ctx.message!.text
+    if(ctx.message.text === "Нету") ctx.wizard.state.endpoint = null
+    else ctx.wizard.state.endpoint = ctx.message!.text
     prisma.addServer(ctx.user?.id, ctx.wizard.state.name, ctx.wizard.state.server_ip, ctx.wizard.state.endpoint)
     prometheus.addTargetConfig(ctx.wizard.state.server_ip, ctx.user!.first_name)
     ctx.reply(`${ctx.wizard.state.name} по адресу ${ctx.wizard.state.server_ip}${ctx.wizard.state.endpoint} успешно зарегистрирован`)

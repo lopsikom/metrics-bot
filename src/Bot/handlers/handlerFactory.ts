@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Scenes, session, Telegraf } from "telegraf"
 import KeyboardHandler from "../models/keyboards/keyboardHandler"
-import { WizardScene } from "telegraf/typings/scenes"
 import WizardUserContext from "@botModels/userContext"
 import actionHandler from "@botModels/actionHandler"
+import { WizardScene } from "telegraf/scenes"
 
 
 export const useHandlers = (bot : Telegraf<WizardUserContext>, ...args : ((bot : Telegraf<WizardUserContext>) => void)[]) =>{

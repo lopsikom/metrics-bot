@@ -52,7 +52,7 @@ class prismaClient {
         })
         return response
     }
-    async addServer(user_id : string, name : string, server_ip : string, endpoint : string) {
+    async addServer(user_id : string, name : string, server_ip : string, endpoint? : string) {
         await this.prisma.servers.create({
             data : {
                 user_id : user_id,
