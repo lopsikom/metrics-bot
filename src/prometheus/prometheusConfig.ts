@@ -2,6 +2,7 @@ import fs from 'fs/promises'
 import YAML from "yaml"
 import dotenv from "dotenv"
 import { targetsPrometheus } from '@prometheus/models/targetsPrometheus'
+import path from 'path'
 
 dotenv.config()
 
@@ -15,7 +16,7 @@ class PrometheusConfig { //Придумать как передавать user_n
 
     async readConfig(name : string) : Promise<targetsPrometheus[]> {
         try{
-            const config = await fs.readFile(`${this.TARGETS_PATH}\\${name}.yml`, 'utf8')
+            const config = await fs.readFile(path.join(this.TARGETS_PATH, `${name}.yml`), 'utf8')
             const data = YAML.parse(config) as targetsPrometheus[]
             return data
         }catch(e){
@@ -25,13 +26,13 @@ class PrometheusConfig { //Придумать как передавать user_n
                 labels : {group : name}
             }]
             
-            await fs.writeFile(`${this.TARGETS_PATH}\\${name}.yml`, YAML.stringify(data), {encoding : 'utf8', mode : 0o644})
+            await fs.writeFile(path.join(this.TARGETS_PATH, `${name}.yml`), YAML.stringify(data), {encoding : 'utf8', mode : 0o644})
             return this.readConfig(name)
         }
     }
     async writeConfig(newConfig : targetsPrometheus[], name : string) {
         const data = YAML.stringify(newConfig)
-        await fs.writeFile(`${this.TARGETS_PATH}\\${name}.yml`, data, {encoding : 'utf8', mode : 0o644})
+        await fs.writeFile(path.join(this.TARGETS_PATH, `${name}.yml`), data, {encoding : 'utf8', mode : 0o644})
     }
     async addTargetConfig(server_ip : string, name : string) {
         const config = await this.readConfig(name)
