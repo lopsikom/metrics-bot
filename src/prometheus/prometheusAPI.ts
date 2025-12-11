@@ -33,6 +33,13 @@ class PrometheusAPI {
             disk: Number(disk?.[0]?.value[1] ?? 0)
         }
     }
+    async checkUpServer(instance : string) : Promise<boolean>{
+        const query = `up{instance="${instance}"}`
+        const data = await this.promQuery(query)
+        const value = Number(data?.[0][0].value[1] ?? 0)
+        return value === 1
+
+    }
 }
 
 export default new PrometheusAPI()

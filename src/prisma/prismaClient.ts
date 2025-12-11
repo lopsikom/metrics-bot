@@ -1,5 +1,6 @@
 import { PrismaClient, Users, Servers } from "./generated/prisma";
 
+
 class prismaClient {
     private prisma : PrismaClient
     constructor(){
