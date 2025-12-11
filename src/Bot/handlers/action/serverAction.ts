@@ -8,6 +8,7 @@ import { Markup } from "telegraf";
 const serverAction : actionHandler = { //Пофиксить типы
     trigger : /SELECT_SERVER_*/,
     handler : async (ctx) => {
+        try{
         const serverId = getDataFromRegEx(ctx)
         if(!serverId) return
         const server = await prisma.getServer(serverId)
@@ -20,6 +21,10 @@ const serverAction : actionHandler = { //Пофиксить типы
         ctx.reply(`${isUp ? `🟢 Сервер ${server.name} доступен` : `🔴 Сервер ${server.name} недоступен`}\nАдрес: ${server.host}\nПуть: ${server.endpoint}`,
            Markup.inlineKeyboard([[Markup.button.callback("Метрики сервера", `SERVER_METRICS_${server.host}`)], [Markup.button.callback("Удалить сервер", `DELETE_SERVER_${server.id}`)]]) 
         )
+        }catch(e){
+            console.log(e)
+            ctx.reply(`Ошибка: ${e}`)
+        }
 
     }
 
