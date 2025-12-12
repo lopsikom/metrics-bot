@@ -3,6 +3,8 @@ import YAML from "yaml"
 import dotenv from "dotenv"
 import { targetsPrometheus } from '@prometheus/models/targetsPrometheus'
 import path from 'path'
+import { userContext } from '@botModels/userContext'
+import prisma from '@prisma/prismaClient'
 
 dotenv.config()
 
@@ -30,7 +32,7 @@ class PrometheusConfig { //Придумать как передавать user_n
             return this.readConfig(name)
         }
     }
-    async writeConfig(newConfig : targetsPrometheus[], name : string) {
+    private async writeConfig(newConfig : targetsPrometheus[], name : string) {
         const data = YAML.stringify(newConfig)
         await fs.writeFile(path.join(this.TARGETS_PATH, `${name}.yml`), data, {encoding : 'utf8', mode : 0o644})
     }
@@ -46,6 +48,43 @@ class PrometheusConfig { //Придумать как передавать user_n
             config[0].targets.splice(index, 1)
         }
         await this.writeConfig(config, name)
+    }
+    async checkConfig(user : userContext) : Promise<boolean>{
+        if(!user.user) return false
+        try{ 
+            const config = await fs.readFile(path.join(this.TARGETS_PATH, `${user.user?.first_name}.yml`), 'utf8')
+            const data = YAML.parse(config) as targetsPrometheus[]
+            if(data[0].targets.length > 0) return true
+            else{
+                const servers = await prisma.getServers(user.user.id)
+                if(!servers || servers.length < 0) return false
+                data[0].targets = servers.map(s => s.host)
+                await this.writeConfig(data, user.user.first_name)
+                return new Promise((resolve) => {
+                    setTimeout(() => resolve(true), 10000)
+                })
+            }
+        }catch(e){
+            try{
+                console.log(e)
+            const data : targetsPrometheus[] = [{
+                targets : [],
+                labels : {group : user.user?.first_name ?? ""}
+            }]
+            
+            await fs.writeFile(path.join(this.TARGETS_PATH, `${user.user.first_name}.yml`), YAML.stringify(data), {encoding : 'utf8', mode : 0o644})
+            const servers = await prisma.getServers(user.user.id)
+            if(!servers || servers.length < 0) return false
+            data[0].targets = servers.map(s => s.host)
+            await this.writeConfig(data, user.user.first_name)
+            return new Promise((resolve) => {
+                setTimeout(() => resolve(true), 10000)
+                })
+            }catch(e) {
+                console.log(e)
+                return false
+            }
+        }
     }
 
 }

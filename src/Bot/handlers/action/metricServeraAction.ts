@@ -16,9 +16,11 @@ const metricServerAction : actionHandler = {
                 `📀 Disk: ${(metrics.disk * 100).toFixed(1)}%`,
                 { parse_mode: "Markdown" }
             );
+            await ctx.answerCbQuery()
         }catch(e){
             console.log(e)
             ctx.reply(`Ошибка: ${e}`)
+            await ctx.answerCbQuery()
         }
     }
 }

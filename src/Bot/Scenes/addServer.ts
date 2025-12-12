@@ -11,16 +11,10 @@ const scene = new Scenes.WizardScene<any>("add_server", //Добавить ва�
     ctx.wizard.state.name = ctx.message!.text
     ctx.reply('Введите адрес сервера с портом при наличии')
     return ctx.wizard.next()
-}, (ctx) =>{
-    ctx.wizard.state.server_ip = ctx.message!.text 
-    ctx.reply("Введите эндпоинт по которому посылаются метрики\nНапример: /prometheus\nИли 'Нету' если нет конкретного эндпоинта")
-    return ctx.wizard.next()
-}, (ctx) =>{
-    if(ctx.message.text === "Нету") ctx.wizard.state.endpoint = null
-    else ctx.wizard.state.endpoint = ctx.message!.text
-    prisma.addServer(ctx.user?.id, ctx.wizard.state.name, ctx.wizard.state.server_ip, ctx.wizard.state.endpoint)
+},  (ctx) =>{
+    prisma.addServer(ctx.user?.id, ctx.wizard.state.name, ctx.wizard.state.server_ip)
     prometheus.addTargetConfig(ctx.wizard.state.server_ip, ctx.user!.first_name)
-    ctx.reply(`${ctx.wizard.state.name} по адресу ${ctx.wizard.state.server_ip}${ctx.wizard.state.endpoint} успешно зарегистрирован`)
+    ctx.reply(`${ctx.wizard.state.name} по адресу ${ctx.wizard.state.server_ip} успешно зарегистрирован`)
     return ctx.scene.leave()
 })
 
