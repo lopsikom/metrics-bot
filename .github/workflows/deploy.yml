@@ -1,0 +1,44 @@
+name: ts-bot
+
+on:
+    push:
+        branches: [main, master]
+    
+jobs:
+    build-and-push:
+        name: Build & push image
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            
+            - name: Log in to GHCR
+              uses: docker/login-action@v2
+              with:
+                registry: ghcr.io
+                username: ${{secrets.GHCR_USER}}
+                password: ${{secrets.GHCR_TOKEN}}
+            - name: Build image
+              run: |
+                docker build -t ghcr.io/${{github.repository_owner}}/tgbot:0.1 .
+                docker push ghcr.io/${{github.repository_owner}}/tgbot:0.1
+    
+    deploy:
+        needs: build-and-push
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy on server
+              uses: D3rHase/ssh-command-action@v0.2.2
+              with:
+                host: ${{secrets.SERVER_IP}}
+                user: ${{secrets.SSH_USER}}
+                private_key: ${{secrets.SSH_KEY}}
+                command: |
+                    docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }};
+                    docker pull ghcr.io/${{github.repository_owner}}/tgbot:0.1;
+                    cd tgBOT/ts-telegram-bot/;
+                    docker compose pull;
+                    docker compose up -d;
+
+                    
