@@ -24,10 +24,17 @@ const serverAction : actionHandler = { //Пофиксить типы
             await ctx.answerCbQuery()
             return
         }
+        try{
         const isUp = await prometheusAPI.checkUpServer(server.host)
         ctx.reply(`${isUp ? `🟢 Сервер ${server.name} доступен` : `🔴 Сервер ${server.name} недоступен`}\nАдрес: ${server.host}`,
            Markup.inlineKeyboard([[Markup.button.callback("Метрики сервера", `SERVER_METRICS_${server.host}`)], [Markup.button.callback("Удалить сервер", `DELETE_SERVER_${server.id}`)]]) 
         )
+        }catch(e){
+            console.log(e)
+            ctx.reply(`🔴 Сервер ${server.name} недоступен\nАдрес: ${server.host}`,
+                Markup.inlineKeyboard([[Markup.button.callback("Метрики сервера", `SERVER_METRICS_${server.host}`)], [Markup.button.callback("Удалить сервер", `DELETE_SERVER_${server.id}`)]]
+            ))
+        }
         await ctx.answerCbQuery()
         }catch(e){
             console.log(e)
