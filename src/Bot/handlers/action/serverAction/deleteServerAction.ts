@@ -2,7 +2,7 @@ import actionHandler from "@botModels/actionHandler";
 import prisma from "@prisma/prismaClient";
 import prometheus from "@prometheus/prometheusConfig";
 import getDataFromRegEx from "Bot/utils/getDataFromRegEx";
-import serverHandler from "../keyboards/reply/servers";
+import serverHandler from "../../keyboards/reply/servers";
 
 const deleteServerAction : actionHandler = {
     trigger : /DELETE_SERVER_*/,

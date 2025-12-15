@@ -4,7 +4,8 @@ enum inlineKeyboardEvent{
     SERVERS = "servers",
     ADD_SERVER = 'add_server',
     DELETE_SERVER = 'delete_server',
-    METRICS_SERVER = 'metrics_server'
+    METRICS_SERVER = 'metrics_server',
+    CHANGE_INFO_SERVER='change_info_server'
 }
 
 export default inlineKeyboardEvent

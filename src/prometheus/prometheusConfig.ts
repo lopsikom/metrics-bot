@@ -49,19 +49,48 @@ class PrometheusConfig { //Придумать как передавать user_n
         }
         await this.writeConfig(config, name)
     }
+    async changeTargetConfig(name : string, oldServer_ip : string, newServer_ip : string) {
+        const config = await this.readConfig(name)
+        const index = config[0].targets.indexOf(oldServer_ip)
+        if(index !== -1){
+            config[0].targets[index] = newServer_ip
+        }
+        await this.writeConfig(config, name)
+    }
     async checkConfig(user : userContext) : Promise<boolean>{
         if(!user.user) return false
         try{ 
             const config = await fs.readFile(path.join(this.TARGETS_PATH, `${user.user?.first_name}.yml`), 'utf8')
             const data = YAML.parse(config) as targetsPrometheus[]
-            if(data[0].targets.length > 0) return true
+            let added = false
+            if(data[0].targets.length > 0) {
+                const servers = await prisma.getServers(user.user.id)
+                if(!servers || servers.length < 0) return false
+                for(const s of servers){
+                    let match = false
+                   for(const t of data[0].targets){
+                    if(s.host === t) {match = true; break}
+                   }
+                   if(!match) {
+                    data[0].targets.push(s.host)
+                    added = true
+                   }
+                }
+                if(added){
+                    await this.writeConfig(data, user.user.first_name)
+                    return new Promise((resolve) => {
+                    setTimeout(() => resolve(true), 12000)
+                })
+                }
+                else return true
+            }
             else{
                 const servers = await prisma.getServers(user.user.id)
                 if(!servers || servers.length < 0) return false
                 data[0].targets = servers.map(s => s.host)
                 await this.writeConfig(data, user.user.first_name)
                 return new Promise((resolve) => {
-                    setTimeout(() => resolve(true), 10000)
+                    setTimeout(() => resolve(true), 12000)
                 })
             }
         }catch(e){
@@ -78,7 +107,7 @@ class PrometheusConfig { //Придумать как передавать user_n
             data[0].targets = servers.map(s => s.host)
             await this.writeConfig(data, user.user.first_name)
             return new Promise((resolve) => {
-                setTimeout(() => resolve(true), 10000)
+                setTimeout(() => resolve(true), 12000)
                 })
             }catch(e) {
                 console.log(e)

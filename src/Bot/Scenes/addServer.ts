@@ -1,9 +1,10 @@
+import ScenesEnum from "@botModels/Scenes/scenesEnum";
 import prisma from "@prisma/prismaClient";
 import prometheus from "@prometheus/prometheusConfig";
 import { Scenes } from "telegraf";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const scene = new Scenes.WizardScene<any>("add_server", //Добавить валидатор значений
+const scene = new Scenes.WizardScene<any>(ScenesEnum.ADD_SERVER, //Добавить валидатор значений
     (ctx) => {
     ctx.reply('Введите название сервера')
     return ctx.wizard.next()

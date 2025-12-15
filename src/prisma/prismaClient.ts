@@ -70,6 +70,14 @@ class prismaClient {
             }
         })
     }
+    async changeDataServer(id : string, data : {name? : string, host? : string}){
+        await this.prisma.servers.update({
+            where: {
+                id : id
+            },
+            data : data
+        })
+    }
     async deleteServer(id : string) {
         await this.prisma.servers.deleteMany({
             where : {

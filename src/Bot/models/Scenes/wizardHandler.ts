@@ -1,4 +1,4 @@
-import userContext from "./userContext";
+import userContext from "../userContext";
 
 interface wizardHandler{
     title : string,

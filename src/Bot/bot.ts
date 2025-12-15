@@ -11,9 +11,14 @@ import howToStartAction from "./handlers/keyboards/inline/howToStart";
 import serverHandler from "./handlers/keyboards/reply/servers";
 import addServer from "./Scenes/addServer";
 import addServerInline from "./handlers/keyboards/inline/addServer";
-import serverAction from "./handlers/action/serverAction";
-import deleteServerAction from "./handlers/action/deleteServerAction";
-import metricServerAction from "./handlers/action/metricServeraAction";
+import serverAction from "./handlers/action/serverAction/serverAction";
+import deleteServerAction from "./handlers/action/serverAction/deleteServerAction";
+import metricServerAction from "./handlers/action/serverAction/metricServeraAction";
+import changeServerInfo from "./handlers/action/serverAction/changeServerInfoAction";
+import changeNameServerScene from "./Scenes/changeServerInfoScenes/changeNameServerScene";
+import changeNameServer from "./handlers/action/serverAction/changeServerInfoAction/changeNameServerAction";
+import changeHostServer from "./handlers/action/serverAction/changeServerInfoAction/changeHostServerAction";
+import changeHostServerScene from "./Scenes/changeServerInfoScenes/changeHostServerScene";
 
 dotenv.config()
 
@@ -22,8 +27,8 @@ const bot = new Telegraf<WizardUserContext>(process.env.BOT_TOKEN ?? "")
 setStart(bot)
 useActionInlineKeyboard(bot, startAction)
 bot.use(userMiddleware)
-useWizardScene(bot, addServer)
-useAction(bot, serverAction, deleteServerAction, metricServerAction)
+useWizardScene(bot, addServer, changeNameServerScene, changeHostServerScene)
+useAction(bot, serverAction, deleteServerAction, metricServerAction, changeServerInfo, changeNameServer, changeHostServer)
 useHandlers(bot)
 useHearsReplyKeyboard(bot, accountHandler, helpHandler, serverHandler)
 useActionInlineKeyboard(bot, howToStartAction, addServerInline)
