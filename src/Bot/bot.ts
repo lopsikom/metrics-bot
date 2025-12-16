@@ -19,6 +19,8 @@ import changeNameServerScene from "./Scenes/changeServerInfoScenes/changeNameSer
 import changeNameServer from "./handlers/action/serverAction/changeServerInfoAction/changeNameServerAction";
 import changeHostServer from "./handlers/action/serverAction/changeServerInfoAction/changeHostServerAction";
 import changeHostServerScene from "./Scenes/changeServerInfoScenes/changeHostServerScene";
+import serverTaskEmitScene from "./Scenes/serverTaskEmitScene";
+import serverTaskEmitAction from "./handlers/action/serverAction/serverTaskEmitAction";
 
 dotenv.config()
 
@@ -27,8 +29,8 @@ const bot = new Telegraf<WizardUserContext>(process.env.BOT_TOKEN ?? "")
 setStart(bot)
 useActionInlineKeyboard(bot, startAction)
 bot.use(userMiddleware)
-useWizardScene(bot, addServer, changeNameServerScene, changeHostServerScene)
-useAction(bot, serverAction, deleteServerAction, metricServerAction, changeServerInfo, changeNameServer, changeHostServer)
+useWizardScene(bot, addServer, changeNameServerScene, changeHostServerScene, serverTaskEmitScene)
+useAction(bot, serverAction, deleteServerAction, metricServerAction, changeServerInfo, changeNameServer, changeHostServer, serverTaskEmitAction)
 useHandlers(bot)
 useHearsReplyKeyboard(bot, accountHandler, helpHandler, serverHandler)
 useActionInlineKeyboard(bot, howToStartAction, addServerInline)

@@ -12,8 +12,11 @@ const metricServerAction : actionHandler = {
             await ctx.reply(
                 `📊 Метрики сервера *${serverIp}*:\n\n` +
                 `🧠 CPU: ${(metrics.cpu * 100).toFixed(1)}%\n` +
+                `🧠 Количество процессов ${metrics.fork.toFixed(1)}\n` +
                 `💾 RAM: ${(metrics.ram * 100).toFixed(1)}%\n` +
-                `📀 Disk: ${(metrics.disk * 100).toFixed(1)}%`,
+                `📀 Disk: ${(metrics.disk * 100).toFixed(1)}%\n` +
+                `🌐 Входящий трафик: ${metrics.receiveNetwork.toFixed(1)} Мбит\n` +
+                `🌐 Исходящий трафик: ${metrics.transmitNetwork.toFixed(1)} Мбит\n`,
                 { parse_mode: "Markdown" }
             );
             await ctx.answerCbQuery()

@@ -19,6 +19,7 @@
     "@types/prettier": "^2.7.3",
     "axios": "^1.13.2",
     "dotenv": "^17.2.2",
+    "node-cron": "^4.2.1",
     "pg": "^8.16.3",
     "telegraf": "^4.16.3",
     "ts-node": "^10.9.2",

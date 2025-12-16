@@ -85,6 +85,37 @@ class prismaClient {
             }
         })
     }
+    async addTask(server_id : string, chat_id : string, task_name : string, interval : string){
+        const response = await this.prisma.task.create({
+            data : {
+                name : task_name,
+                interval : interval,
+                server_id : server_id,
+                chat_id : chat_id
+            }
+        })
+        return response
+    }
+    async getAllTasks() {
+        const response = await this.prisma.task.findMany({
+            include: {
+                Server : {
+                    select: {
+                        host: true
+                    }
+                }
+            }
+        })
+        return response
+    }
+    async getAllTasksByServer(server_id : string) {
+        const response = await this.prisma.task.findMany({
+            where : {
+                server_id : server_id
+            }
+        })
+        return response
+    }
 }
 
 const prisma = new prismaClient()
