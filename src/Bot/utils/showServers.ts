@@ -17,7 +17,7 @@ async function showServer(ctx : userContext, id? : string) {
             return
         }
         const params = Markup.inlineKeyboard([[Markup.button.callback("Метрики сервера", `SERVER_METRICS_${server.host}`),
-            Markup.button.callback("Устанановить рассылку", `SERVER_TASK_EMIT_${server.id}`)
+            Markup.button.callback("Уведомления", `SERVER_TASK_MENU_${server.id}`)
         ], 
         [Markup.button.callback("Изменить данные", `SERVER_CHANGE_INFO_${server.id}`)],
         [Markup.button.callback("Удалить сервер", `DELETE_SERVER_${server.id}`)]])

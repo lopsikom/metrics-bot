@@ -6,11 +6,11 @@ import prometheusAPI from "@prometheus/prometheusAPI"
 import cron, { ScheduledTask } from "node-cron"
 import { Telegraf } from "telegraf"
 
-class CroneTask {
-    private emitTaskList : ScheduledTask[] = []
-    async emitTask(ctx : userContext, server : Servers, interval : string){
+class CroneTask { //Вынести в отдельный сервис
+    private emitTaskList : Record<string, ScheduledTask> = {}
+    async emitTask(ctx : userContext, server : Servers, interval : string, name : string){
         const options = {
-            name : `DefaultTask_${ctx.user?.first_name}_${interval}_${new Date().getMilliseconds()}`,
+            name : `DefaultTask_${ctx.user?.first_name}_${name}_${interval}_${new Date().getMilliseconds()}`,
             noOverlap : true
         }
        const task = cron.createTask(interval, async () => {
@@ -26,12 +26,21 @@ class CroneTask {
           }
        }, options)
        console.log(task.name)
-       prisma.addTask(server.id, ctx.chat?.id.toString() ?? "123", task.name ?? "", interval)
+       const taskDB = await prisma.addTask(server.id, ctx.chat?.id.toString() ?? "123", task.name ?? "", interval, task.id)
        task.start()
-       this.emitTaskList.push(task)
+       this.emitTaskList[taskDB.id] = task
     }
-    unEmitTask(){
-
+    async unEmitTask(id : string) : Promise<boolean>{
+        try{
+            const task = this.emitTaskList[id]
+            task.stop()
+            delete this.emitTaskList[id]
+            await prisma.deleteTask(id)
+            return true
+        }catch(e){
+            console.log(e)
+            return false
+        }
     }
     async initializeEmitTask(bot : Telegraf<WizardUserContext>) {
         const tasks = await prisma.getAllTasks()
@@ -54,7 +63,7 @@ class CroneTask {
                 }
             }, options)
             task.start()
-            this.emitTaskList.push(task)
+            this.emitTaskList[t.id] = task
         })
     }
 }

@@ -116,6 +116,14 @@ class prismaClient {
         })
         return response
     }
+    async deleteTask(task_id : string) {
+        const response = await this.prisma.task.delete({
+            where :{
+                id : task_id
+            }
+        })
+        return response
+    }
 }
 
 const prisma = new prismaClient()

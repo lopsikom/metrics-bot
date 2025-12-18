@@ -7,6 +7,11 @@ import { Markup, Scenes } from "telegraf";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const scene = new Scenes.WizardScene<any>(ScenesEnum.SERVER_TASK_EMIT,
     async (ctx) => {
+        await ctx.reply('Введите название для уведомления')
+        return ctx.wizard.next()
+    },
+    async (ctx) => {
+        ctx.wizard.state.name = ctx.message.text
         await ctx.reply("Выберите промежутки времени",
             Markup.inlineKeyboard([
                 [Markup.button.callback("1 минута", 'TIME_* * * * *'), Markup.button.callback("10 минут", 'TIME_*/10 * * * *')],
@@ -26,7 +31,7 @@ scene.action(/TIME_(.+)/, async (ctx) => {
     console.log('server')
     const server = await prisma.getServer(ctx.wizard.state.serverId)
     if(!server) return ctx.scene.leave()
-    await croneTask.emitTask(ctx,server, ctx.wizard.state.interval)
+    await croneTask.emitTask(ctx,server, ctx.wizard.state.interval, ctx.wizard.state.name)
     ctx.reply("Уведомление зарегистрированно")
     return ctx.scene.leave()
 })

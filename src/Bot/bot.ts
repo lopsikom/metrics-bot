@@ -13,14 +13,17 @@ import addServer from "./Scenes/addServer";
 import addServerInline from "./handlers/keyboards/inline/addServer";
 import serverAction from "./handlers/action/serverAction/serverAction";
 import deleteServerAction from "./handlers/action/serverAction/deleteServerAction";
-import metricServerAction from "./handlers/action/serverAction/metricServeraAction";
+import metricServerAction from "./handlers/action/serverAction/metricServerAction";
 import changeServerInfo from "./handlers/action/serverAction/changeServerInfoAction";
 import changeNameServerScene from "./Scenes/changeServerInfoScenes/changeNameServerScene";
 import changeNameServer from "./handlers/action/serverAction/changeServerInfoAction/changeNameServerAction";
 import changeHostServer from "./handlers/action/serverAction/changeServerInfoAction/changeHostServerAction";
 import changeHostServerScene from "./Scenes/changeServerInfoScenes/changeHostServerScene";
 import serverTaskEmitScene from "./Scenes/serverTaskEmitScene";
-import serverTaskEmitAction from "./handlers/action/serverAction/serverTaskEmitAction";
+import serverTaskEmitAction from "./handlers/action/serverAction/taskAction/serverTaskEmitAction";
+import serverTasksInfo from "./handlers/action/serverAction/taskAction/serverTasksInfo";
+import serverTaskDeleteAction from "./handlers/action/serverAction/taskAction/serverTaskDeleteAction";
+import taskDeleteAction from "./handlers/action/serverAction/taskAction/taskDeleteAction";
 
 dotenv.config()
 
@@ -30,7 +33,7 @@ setStart(bot)
 useActionInlineKeyboard(bot, startAction)
 bot.use(userMiddleware)
 useWizardScene(bot, addServer, changeNameServerScene, changeHostServerScene, serverTaskEmitScene)
-useAction(bot, serverAction, deleteServerAction, metricServerAction, changeServerInfo, changeNameServer, changeHostServer, serverTaskEmitAction)
+useAction(bot, serverAction, deleteServerAction, metricServerAction, changeServerInfo, changeNameServer, changeHostServer, serverTaskEmitAction, serverTasksInfo, serverTaskDeleteAction, taskDeleteAction)
 useHandlers(bot)
 useHearsReplyKeyboard(bot, accountHandler, helpHandler, serverHandler)
 useActionInlineKeyboard(bot, howToStartAction, addServerInline)

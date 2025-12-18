@@ -21,7 +21,7 @@ model Users {
 
 model Servers {
   id       String @id @default(uuid()) @db.Uuid
-  name     String @unique
+  name     String 
   host     String
   user_id  String @db.Uuid
   user     Users  @relation(fields: [user_id], references: [id], onDelete: Cascade)
