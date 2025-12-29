@@ -1,6 +1,7 @@
 import ScenesEnum from "@botModels/Scenes/scenesEnum";
 import prisma from "@prisma/prismaClient";
 import croneTask from "Bot/services/croneTask";
+import handlersCollector from "Bot/services/handlersCollector";
 import { Markup, Scenes } from "telegraf";
 
 
@@ -36,4 +37,4 @@ scene.action(/TIME_(.+)/, async (ctx) => {
     return ctx.scene.leave()
 })
 
-export default scene
+handlersCollector.addScenes(scene)

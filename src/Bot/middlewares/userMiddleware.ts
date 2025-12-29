@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import handlersCollector from "Bot/services/handlersCollector";
 import prisma from "../../prisma/prismaClient";
 import userContext from "../models/userContext";
 
-export default async function userMiddleware(ctx : userContext, next: () => Promise<any>){
+handlersCollector.addMiddlewares(async (ctx : userContext, next: () => Promise<any>) => {
     const tgId = ctx.from?.id;
     console.log("Midlle")
     if(!tgId) return next();
@@ -34,4 +35,4 @@ export default async function userMiddleware(ctx : userContext, next: () => Prom
     ctx.sessionUser.userId = user?.id
     return next();
     
-}
+})

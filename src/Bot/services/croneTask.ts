@@ -26,7 +26,7 @@ class CroneTask { //Вынести в отдельный сервис
           }
        }, options)
        console.log(task.name)
-       const taskDB = await prisma.addTask(server.id, ctx.chat?.id.toString() ?? "123", task.name ?? "", interval, task.id)
+       const taskDB = await prisma.addTask(server.id, ctx.chat?.id.toString() ?? "123", task.name ?? "", interval)
        task.start()
        this.emitTaskList[taskDB.id] = task
     }

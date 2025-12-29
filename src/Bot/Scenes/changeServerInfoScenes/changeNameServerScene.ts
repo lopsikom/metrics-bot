@@ -1,5 +1,6 @@
 import ScenesEnum from "@botModels/Scenes/scenesEnum";
 import prisma from "@prisma/prismaClient";
+import handlersCollector from "Bot/services/handlersCollector";
 import showServer from "Bot/utils/showServers";
 import { Scenes } from "telegraf";
 
@@ -18,4 +19,4 @@ const changeNameServerScene = new Scenes.WizardScene<any>(ScenesEnum.SERVER_CHAN
     }
 )
 
-export default changeNameServerScene
+handlersCollector.addScenes(changeNameServerScene)

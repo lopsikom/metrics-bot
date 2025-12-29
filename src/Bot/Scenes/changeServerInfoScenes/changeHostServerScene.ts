@@ -1,6 +1,7 @@
 import ScenesEnum from "@botModels/Scenes/scenesEnum";
 import prisma from "@prisma/prismaClient";
 import prometheusConfig from "@prometheus/prometheusConfig";
+import handlersCollector from "Bot/services/handlersCollector";
 import showServer from "Bot/utils/showServers";
 import { Scenes } from "telegraf";
 
@@ -21,4 +22,4 @@ const changeHostServerScene = new Scenes.WizardScene<any>(ScenesEnum.SERVER_CHAN
         await showServer(ctx, ctx.wizard.state.server_id)
     }
 )
-export default changeHostServerScene
+handlersCollector.addScenes(changeHostServerScene)
