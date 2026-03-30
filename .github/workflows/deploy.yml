@@ -68,7 +68,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/app
+            cd ~/metrics-bot
             echo "GHCR_OWNER=${{ github.repository_owner }}" > .env
             echo "RABBITMQ_USER=${{ secrets.RABBITMQ_USER }}" >> .env
             echo "RABBITMQ_PASS=${{ secrets.RABBITMQ_PASS }}" >> .env
