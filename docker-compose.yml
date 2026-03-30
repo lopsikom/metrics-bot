@@ -1,0 +1,86 @@
+volumes:
+  prometheus-data:
+  rabbitmq_data:
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--web.enable-lifecycle"
+    ports:
+      - "9090:9090"
+    volumes:
+      - /home/lopsik/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/etc/prometheus
+
+  server-service:
+    image: ghcr.io/lopsikom/server-service:latest
+    container_name: server-service
+    restart: always
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbitmq:5672
+      DATABASE_URL: ${DATABASE_URL}
+
+  metrics-service:
+    image: ghcr.io/lopsikom/metrics-service:latest
+    container_name: metrics-service
+    restart: always
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      prometheus:
+        condition: service_started
+    environment:
+      RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbitmq:5672
+      PROMETHEUS_URL: http://prometheus:9090
+      PATH_CONFIG: /etc/prometheus
+    entrypoint: >
+      sh -c "mkdir -p /etc/prometheus/targets && pnpm --filter metrics-service dev"
+    volumes:
+      - prometheus-data:/etc/prometheus
+
+  scheduler-service:
+    image: ghcr.io/lopsikom/scheduler-service:latest
+    container_name: scheduler-service
+    restart: always
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbitmq:5672
+      DATABASE_URL: ${DATABASE_URL}
+
+  telegram-bot:
+    image: ghcr.io/lopsikom/telegram-bot:latest
+    container_name: telegram-bot
+    restart: always
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbitmq:5672
+      BOT_TOKEN: ${BOT_TOKEN}

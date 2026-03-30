@@ -1,42 +1,16 @@
 {
-  "name": "ts-telegram-bot",
-  "version": "1.0.0",
-  "type": "module",
+  "name": "bot-monorepo",
+  "private": true,
   "scripts": {
-    "dev": "tsx src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "pnpm --filter \"./services/*\" dev",
+    "build": "pnpm --filter \"./services/*\" build"
   },
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "@prisma/adapter-pg": "^7.0.1",
-    "@prisma/client": "^6.19.0",
-    "@types/eslint": "^9.6.1",
-    "@types/node": "^24.5.2",
-    "@types/prettier": "^2.7.3",
-    "axios": "^1.13.2",
-    "dotenv": "^17.2.2",
-    "node-cron": "^4.2.1",
-    "pg": "^8.16.3",
-    "telegraf": "^4.16.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.2",
-    "yaml": "^2.8.1"
+    "dotenv": "^17.3.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.37.0",
-    "@typescript-eslint/eslint-plugin": "^8.46.1",
-    "@typescript-eslint/parser": "^8.46.1",
-    "eslint": "^9.37.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "globals": "^16.4.0",
-    "prettier": "^3.6.2",
-    "prisma": "^6.19.0",
-    "tsx": "^4.20.6",
-    "typescript-eslint": "^8.46.1"
+    "@types/node": "^24.12.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

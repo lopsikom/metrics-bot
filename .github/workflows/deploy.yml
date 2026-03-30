@@ -1,44 +1,80 @@
-name: ts-bot
+name: Build and Deploy
 
 on:
-    push:
-        branches: [main, master]
-    
+  push:
+    branches: [main, master]
+
 jobs:
-    build-and-push:
-        name: Build & push image
-        runs-on: ubuntu-latest
+  build:
+    name: Build & push images
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - name: telegram-bot
+            context: .
+            dockerfile: services/telegram-bot/Dockerfile
+          - name: metrics-service
+            context: .
+            dockerfile: services/metrics-service/Dockerfile
+          - name: server-service
+            context: .
+            dockerfile: services/server-service/Dockerfile
+          - name: scheduler-service
+            context: .
+            dockerfile: services/scheduler-service/Dockerfile
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-            
-            - name: Log in to GHCR
-              uses: docker/login-action@v2
-              with:
-                registry: ghcr.io
-                username: ${{secrets.GHCR_USER}}
-                password: ${{secrets.GHCR_TOKEN}}
-            - name: Build image
-              run: |
-                docker build -t ghcr.io/${{github.repository_owner}}/tgbot:0.1 .
-                docker push ghcr.io/${{github.repository_owner}}/tgbot:0.1
-    
-    deploy:
-        needs: build-and-push
-        runs-on: ubuntu-latest
-        steps:
-            - name: Deploy on server
-              uses: D3rHase/ssh-command-action@v0.2.2
-              with:
-                host: ${{secrets.SERVER_IP}}
-                user: ${{secrets.SSH_USER}}
-                private_key: ${{secrets.SSH_KEY}}
-                command: |
-                    docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }};
-                    docker pull ghcr.io/${{github.repository_owner}}/tgbot:0.1;
-                    cd tgBOT/ts-telegram-bot/;
-                    docker compose pull;
-                    docker compose up -d;
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-                    
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USER }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Build and push ${{ matrix.service.name }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.service.context }}
+          file: ${{ matrix.service.dockerfile }}
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.service.name }}:latest
+
+  deploy:
+    name: Deploy to server
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "docker-compose.yml"
+          target: "~/metrics-bot"
+
+      - name: Deploy on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/app
+            echo "GHCR_OWNER=${{ github.repository_owner }}" > .env
+            echo "RABBITMQ_USER=${{ secrets.RABBITMQ_USER }}" >> .env
+            echo "RABBITMQ_PASS=${{ secrets.RABBITMQ_PASS }}" >> .env
+            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+            echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" >> .env
+            docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
+            docker compose pull
+            docker compose up -d
+            rm -f .env
