@@ -22,12 +22,12 @@ export class handlersCollector {
     }
     initHandlers(bot : Telegraf<WizardUserContext>){
         setStart(bot)
-        const stage = new Scenes.Stage(this.scenesCollected)
-            bot.use(session())
-            bot.use(stage.middleware())
         this.middlewaresCollected.forEach(m =>{
             bot.use(m)
         })
+        const stage = new Scenes.Stage(this.scenesCollected)
+        bot.use(session())
+        bot.use(stage.middleware())
         this.handlersCollected.forEach(h =>{
             switch (h.type){
                 case "action":

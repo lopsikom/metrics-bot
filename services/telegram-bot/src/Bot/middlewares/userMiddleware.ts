@@ -4,6 +4,7 @@ import handlersCollector from "../services/handlersCollector";
 import { createNewUser, getUserById, getUserByTgId } from "../utils/utils";
 
 handlersCollector.addMiddlewares(async (ctx : userContext, next: () => Promise<any>) => {
+    console.log("middleware")
     const tgId = ctx.from?.id;
     if(!tgId) return next();
 
@@ -25,6 +26,7 @@ handlersCollector.addMiddlewares(async (ctx : userContext, next: () => Promise<a
     }
     console.log('not user')
     const user = await createNewUser(ctx.from.id.toString(), ctx.from.first_name, ctx.from.last_name, ctx.from.username)
+    console.log("user ", user)
     ctx.user = user
     ctx.sessionUser = ctx.session ?? {}
     ctx.sessionUser.userId = user?.id

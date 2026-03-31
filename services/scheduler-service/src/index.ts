@@ -6,7 +6,7 @@ await croneTask.initializeEmitTask()
 console.log("crone service is running");
 
 await consume(QueueEvent.CRON_EMIT_TASK, async (data) => {
-    await croneTask.emitTask(data.data.host, data.data.server_id, data.data.first_name, data.data.chat_id, data.data.interval, data.data.name)
+    await croneTask.emitTask(data.data.host, data.data.server_id, data.data.first_name, data.data.chat_id, data.data.interval, data.data.name, data.data.messenger ?? "telegram")
 })
 await consume(QueueEvent.CRON_UN_EMIT_TASK, async (data) => {
     const response = await croneTask.unEmitTask(data.data);

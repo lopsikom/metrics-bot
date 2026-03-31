@@ -22,13 +22,15 @@ model task {
   interval  String
   server_id String  @db.Uuid
   chat_id   String
+  messenger String  @default("telegram")
   id        String  @id @default(uuid()) @db.Uuid
   servers   servers @relation(fields: [server_id], references: [id], onDelete: Cascade)
 }
 
 model users {
   id          String    @id @default(uuid()) @db.Uuid
-  telegram_id String    @unique
+  telegram_id String?   @unique
+  max_id      String?   @unique
   first_name  String
   second_name String?
   login       String?

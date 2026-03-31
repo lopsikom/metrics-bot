@@ -4,7 +4,8 @@ export interface IEmitTask {
     first_name : string,
     chat_id : string,
     interval : string,
-    name : string
+    name : string,
+    messenger? : string
 }
 export const croneTime : Record<string, string> = {
     '* * * * *' : "Каждую минуту",

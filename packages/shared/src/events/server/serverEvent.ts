@@ -1,13 +1,15 @@
 
 export interface UserPrisma{
     id : string,
-    telegram_id : string,
+    telegram_id : string | null,
+    max_id : string | null,
     first_name : string,
     second_name : string | null,
     login : string | null
 }
 export interface UserPrismaAdd{
-    telegram_id : string,
+    telegram_id? : string | null,
+    max_id? : string | null,
     first_name : string,
     second_name? : string | null,
     login? : string | null
@@ -28,7 +30,8 @@ export interface TaskPrisma{
     name : string
     interval : string,
     server_id : string,
-    chat_id : string
+    chat_id : string,
+    messenger : string
 }
 export interface TaskPrismaWithServer extends TaskPrisma{
     servers : {
@@ -39,5 +42,6 @@ export interface TaskPrismaAdd{
     interval : string,
     server_id : string,
     chat_id : string,
-    name : string
+    name : string,
+    messenger? : string
 }

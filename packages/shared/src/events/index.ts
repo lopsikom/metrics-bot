@@ -53,6 +53,12 @@ export enum QueueEvent {
     TELEGRAM_SEND_MESSAGE = "telegram.sendMessage",
     TELEGRAM_SEND_MESSAGE_RESPONSE = "telegram.sendMessage.response",
 
+    MAX_SEND_MESSAGE = "max.sendMessage",
+    MAX_SEND_MESSAGE_RESPONSE = "max.sendMessage.response",
+
+    PRISMA_GET_USER_BY_MAX_ID = "prisma.getUserByMaxId",
+    PRISMA_GET_USER_BY_MAX_ID_RESPONSE = "prisma.getUserByMaxId.response",
+
     CRON_EMIT_TASK = "cron.emitTask",
     CRON_EMIT_TASK_RESPONSE = "cron.emitTask.response",
     CRON_UN_EMIT_TASK = "cron.UnEmitTask",
@@ -81,6 +87,8 @@ export interface QueueEventConsumerMap {
     [QueueEvent.PROMETHEUS_API_CHECK_UP_SERVER] : IRabbitEvent<string>,
     [QueueEvent.PROMETHEUS_API_GET_SERVER_INFO] : IRabbitEvent<string>,
     [QueueEvent.TELEGRAM_SEND_MESSAGE] : IRabbitEvent<{id : string, message : string}>,
+    [QueueEvent.MAX_SEND_MESSAGE] : IRabbitEvent<{id : string, message : string}>,
+    [QueueEvent.PRISMA_GET_USER_BY_MAX_ID] : IRabbitEvent<string>,
     [QueueEvent.CRON_EMIT_TASK] : IRabbitEvent<IEmitTask>,
     [QueueEvent.CRON_UN_EMIT_TASK] : IRabbitEvent<string>
 }
@@ -107,6 +115,8 @@ export interface QueueEventResponseMap {
     [QueueEvent.PROMETHEUS_API_CHECK_UP_SERVER_RESPONSE] : IRabbitEvent<boolean>,
     [QueueEvent.PROMETHEUS_API_GET_SERVER_INFO_RESPONSE] : IRabbitEvent<IServerInfo>,
     [QueueEvent.TELEGRAM_SEND_MESSAGE_RESPONSE] : IRabbitEvent<void>,
+    [QueueEvent.MAX_SEND_MESSAGE_RESPONSE] : IRabbitEvent<void>,
+    [QueueEvent.PRISMA_GET_USER_BY_MAX_ID_RESPONSE] : IRabbitEvent<UserPrisma | null>,
     [QueueEvent.CRON_EMIT_TASK_RESPONSE] : IRabbitEvent<void>,
     [QueueEvent.CRON_UN_EMIT_TASK_RESPONSE] : IRabbitEvent<boolean>
 }
@@ -132,6 +142,8 @@ export type QueueEventRequestToResponse = {
     [QueueEvent.PROMETHEUS_API_CHECK_UP_SERVER]:        QueueEvent.PROMETHEUS_API_CHECK_UP_SERVER_RESPONSE,
     [QueueEvent.PROMETHEUS_API_GET_SERVER_INFO]:        QueueEvent.PROMETHEUS_API_GET_SERVER_INFO_RESPONSE,
     [QueueEvent.TELEGRAM_SEND_MESSAGE] :                QueueEvent.TELEGRAM_SEND_MESSAGE_RESPONSE,
+    [QueueEvent.MAX_SEND_MESSAGE] :                    QueueEvent.MAX_SEND_MESSAGE_RESPONSE,
+    [QueueEvent.PRISMA_GET_USER_BY_MAX_ID] :           QueueEvent.PRISMA_GET_USER_BY_MAX_ID_RESPONSE,
     [QueueEvent.CRON_EMIT_TASK] :                       QueueEvent.CRON_EMIT_TASK_RESPONSE,
     [QueueEvent.CRON_UN_EMIT_TASK] :                    QueueEvent.CRON_UN_EMIT_TASK_RESPONSE
 }

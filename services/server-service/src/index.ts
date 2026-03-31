@@ -18,7 +18,7 @@ await consume(QueueEvent.PRISMA_GET_USER_BY_ID, async (data) => {
     })
 })
 await consume(QueueEvent.PRISMA_CREATE_NEW_USER, async (data) => {
-    const response = await prisma.createNewUser(data.data.telegram_id, data.data.first_name, data.data.second_name, data.data.login) 
+    const response = await prisma.createNewUser(data.data.telegram_id, data.data.first_name, data.data.second_name, data.data.login, data.data.max_id)
     await publish<QueueEvent.PRISMA_CREATE_NEW_USER_RESPONSE>(data.replyTo, {replyTo : data.replyTo, data : response}, {
         listenOnce : true,
         autoDelete : true,
@@ -28,6 +28,14 @@ await consume(QueueEvent.PRISMA_CREATE_NEW_USER, async (data) => {
 await consume(QueueEvent.PRISMA_GET_USER_BY_TGID, async (data) => {
     const response = await prisma.getUserByTgId(data.data);
     await publish<QueueEvent.PRISMA_GET_USER_BY_TGID_RESPONSE>(data.replyTo, {replyTo : data.replyTo, data : response}, {
+        listenOnce : true,
+        autoDelete : true,
+        expires : 3600
+    })
+})
+await consume(QueueEvent.PRISMA_GET_USER_BY_MAX_ID, async (data) => {
+    const response = await prisma.getUserByMaxId(data.data);
+    await publish<QueueEvent.PRISMA_GET_USER_BY_MAX_ID_RESPONSE>(data.replyTo, {replyTo : data.replyTo, data : response}, {
         listenOnce : true,
         autoDelete : true,
         expires : 3600
@@ -74,7 +82,7 @@ await consume(QueueEvent.PRISMA_DELETE_SERVER, async(data) => {
     });
 })
 await consume(QueueEvent.PRISMA_ADD_TASK, async(data) => {
-    const response = await prisma.addTask(data.data.server_id, data.data.chat_id, data.data.name, data.data.interval);
+    const response = await prisma.addTask(data.data.server_id, data.data.chat_id, data.data.name, data.data.interval, data.data.messenger);
     await publish<QueueEvent.PRISMA_ADD_TASK_RESPONSE>(data.replyTo, {replyTo : data.replyTo, data : response}, {
         listenOnce : true,
         autoDelete : true,

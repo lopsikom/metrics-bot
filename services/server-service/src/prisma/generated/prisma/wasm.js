@@ -105,12 +105,14 @@ exports.Prisma.TaskScalarFieldEnum = {
   interval: 'interval',
   server_id: 'server_id',
   chat_id: 'chat_id',
+  messenger: 'messenger',
   id: 'id'
 };
 
 exports.Prisma.UsersScalarFieldEnum = {
   id: 'id',
   telegram_id: 'telegram_id',
+  max_id: 'max_id',
   first_name: 'first_name',
   second_name: 'second_name',
   login: 'login'
@@ -148,7 +150,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/lopsik/ts-telegram-bot/services/server-service/prisma/generated/prisma",
+      "value": "/home/lopsik/ts-telegram-bot/services/server-service/src/prisma/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -162,12 +164,12 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/lopsik/ts-telegram-bot/services/server-service/prisma/schema.prisma",
+    "sourceFilePath": "/home/lopsik/ts-telegram-bot/services/server-service/src/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
     "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "schemaEnvPath": "../../../../.env"
   },
   "relativePath": "../..",
   "clientVersion": "6.19.2",
@@ -176,7 +178,6 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -185,13 +186,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel servers {\n  id      String @id @default(uuid()) @db.Uuid\n  name    String\n  host    String\n  user_id String @db.Uuid\n  users   users  @relation(fields: [user_id], references: [id], onDelete: Cascade)\n  task    task[]\n}\n\nmodel task {\n  name      String\n  interval  String\n  server_id String  @db.Uuid\n  chat_id   String\n  id        String  @id @default(uuid()) @db.Uuid\n  servers   servers @relation(fields: [server_id], references: [id], onDelete: Cascade)\n}\n\nmodel users {\n  id          String    @id @default(uuid()) @db.Uuid\n  telegram_id String    @unique\n  first_name  String\n  second_name String?\n  login       String?\n  servers     servers[]\n}\n",
-  "inlineSchemaHash": "34f59c76ac81db46ad8d05fdf5b32f7d742becae0ca880db57aeebda43b48a94",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel servers {\n  id      String @id @default(uuid()) @db.Uuid\n  name    String\n  host    String\n  user_id String @db.Uuid\n  users   users  @relation(fields: [user_id], references: [id], onDelete: Cascade)\n  task    task[]\n}\n\nmodel task {\n  name      String\n  interval  String\n  server_id String  @db.Uuid\n  chat_id   String\n  messenger String  @default(\"telegram\")\n  id        String  @id @default(uuid()) @db.Uuid\n  servers   servers @relation(fields: [server_id], references: [id], onDelete: Cascade)\n}\n\nmodel users {\n  id          String    @id @default(uuid()) @db.Uuid\n  telegram_id String?   @unique\n  max_id      String?   @unique\n  first_name  String\n  second_name String?\n  login       String?\n  servers     servers[]\n}\n",
+  "inlineSchemaHash": "bd3c0d76fc0f9dea02a8f81e4ce19196e5cba5fe11a654f31a9c810807572e6b",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"servers\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"host\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"users\",\"relationName\":\"serversTousers\"},{\"name\":\"task\",\"kind\":\"object\",\"type\":\"task\",\"relationName\":\"serversTotask\"}],\"dbName\":null},\"task\":{\"fields\":[{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"interval\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"server_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"chat_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"servers\",\"kind\":\"object\",\"type\":\"servers\",\"relationName\":\"serversTotask\"}],\"dbName\":null},\"users\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"telegram_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"first_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"second_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"login\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"servers\",\"kind\":\"object\",\"type\":\"servers\",\"relationName\":\"serversTousers\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"servers\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"host\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"users\",\"kind\":\"object\",\"type\":\"users\",\"relationName\":\"serversTousers\"},{\"name\":\"task\",\"kind\":\"object\",\"type\":\"task\",\"relationName\":\"serversTotask\"}],\"dbName\":null},\"task\":{\"fields\":[{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"interval\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"server_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"chat_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"messenger\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"servers\",\"kind\":\"object\",\"type\":\"servers\",\"relationName\":\"serversTotask\"}],\"dbName\":null},\"users\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"telegram_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"max_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"first_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"second_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"login\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"servers\",\"kind\":\"object\",\"type\":\"servers\",\"relationName\":\"serversTousers\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

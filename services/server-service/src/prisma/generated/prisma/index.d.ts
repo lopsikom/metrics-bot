@@ -2194,6 +2194,7 @@ export namespace Prisma {
     interval: string | null
     server_id: string | null
     chat_id: string | null
+    messenger: string | null
     id: string | null
   }
 
@@ -2202,6 +2203,7 @@ export namespace Prisma {
     interval: string | null
     server_id: string | null
     chat_id: string | null
+    messenger: string | null
     id: string | null
   }
 
@@ -2210,6 +2212,7 @@ export namespace Prisma {
     interval: number
     server_id: number
     chat_id: number
+    messenger: number
     id: number
     _all: number
   }
@@ -2220,6 +2223,7 @@ export namespace Prisma {
     interval?: true
     server_id?: true
     chat_id?: true
+    messenger?: true
     id?: true
   }
 
@@ -2228,6 +2232,7 @@ export namespace Prisma {
     interval?: true
     server_id?: true
     chat_id?: true
+    messenger?: true
     id?: true
   }
 
@@ -2236,6 +2241,7 @@ export namespace Prisma {
     interval?: true
     server_id?: true
     chat_id?: true
+    messenger?: true
     id?: true
     _all?: true
   }
@@ -2317,6 +2323,7 @@ export namespace Prisma {
     interval: string
     server_id: string
     chat_id: string
+    messenger: string
     id: string
     _count: TaskCountAggregateOutputType | null
     _min: TaskMinAggregateOutputType | null
@@ -2342,6 +2349,7 @@ export namespace Prisma {
     interval?: boolean
     server_id?: boolean
     chat_id?: boolean
+    messenger?: boolean
     id?: boolean
     servers?: boolean | serversDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
@@ -2351,6 +2359,7 @@ export namespace Prisma {
     interval?: boolean
     server_id?: boolean
     chat_id?: boolean
+    messenger?: boolean
     id?: boolean
     servers?: boolean | serversDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
@@ -2360,6 +2369,7 @@ export namespace Prisma {
     interval?: boolean
     server_id?: boolean
     chat_id?: boolean
+    messenger?: boolean
     id?: boolean
     servers?: boolean | serversDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
@@ -2369,10 +2379,11 @@ export namespace Prisma {
     interval?: boolean
     server_id?: boolean
     chat_id?: boolean
+    messenger?: boolean
     id?: boolean
   }
 
-  export type taskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"name" | "interval" | "server_id" | "chat_id" | "id", ExtArgs["result"]["task"]>
+  export type taskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"name" | "interval" | "server_id" | "chat_id" | "messenger" | "id", ExtArgs["result"]["task"]>
   export type taskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     servers?: boolean | serversDefaultArgs<ExtArgs>
   }
@@ -2393,6 +2404,7 @@ export namespace Prisma {
       interval: string
       server_id: string
       chat_id: string
+      messenger: string
       id: string
     }, ExtArgs["result"]["task"]>
     composites: {}
@@ -2822,6 +2834,7 @@ export namespace Prisma {
     readonly interval: FieldRef<"task", 'String'>
     readonly server_id: FieldRef<"task", 'String'>
     readonly chat_id: FieldRef<"task", 'String'>
+    readonly messenger: FieldRef<"task", 'String'>
     readonly id: FieldRef<"task", 'String'>
   }
     
@@ -3250,6 +3263,7 @@ export namespace Prisma {
   export type UsersMinAggregateOutputType = {
     id: string | null
     telegram_id: string | null
+    max_id: string | null
     first_name: string | null
     second_name: string | null
     login: string | null
@@ -3258,6 +3272,7 @@ export namespace Prisma {
   export type UsersMaxAggregateOutputType = {
     id: string | null
     telegram_id: string | null
+    max_id: string | null
     first_name: string | null
     second_name: string | null
     login: string | null
@@ -3266,6 +3281,7 @@ export namespace Prisma {
   export type UsersCountAggregateOutputType = {
     id: number
     telegram_id: number
+    max_id: number
     first_name: number
     second_name: number
     login: number
@@ -3276,6 +3292,7 @@ export namespace Prisma {
   export type UsersMinAggregateInputType = {
     id?: true
     telegram_id?: true
+    max_id?: true
     first_name?: true
     second_name?: true
     login?: true
@@ -3284,6 +3301,7 @@ export namespace Prisma {
   export type UsersMaxAggregateInputType = {
     id?: true
     telegram_id?: true
+    max_id?: true
     first_name?: true
     second_name?: true
     login?: true
@@ -3292,6 +3310,7 @@ export namespace Prisma {
   export type UsersCountAggregateInputType = {
     id?: true
     telegram_id?: true
+    max_id?: true
     first_name?: true
     second_name?: true
     login?: true
@@ -3372,7 +3391,8 @@ export namespace Prisma {
 
   export type UsersGroupByOutputType = {
     id: string
-    telegram_id: string
+    telegram_id: string | null
+    max_id: string | null
     first_name: string
     second_name: string | null
     login: string | null
@@ -3398,6 +3418,7 @@ export namespace Prisma {
   export type usersSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     telegram_id?: boolean
+    max_id?: boolean
     first_name?: boolean
     second_name?: boolean
     login?: boolean
@@ -3408,6 +3429,7 @@ export namespace Prisma {
   export type usersSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     telegram_id?: boolean
+    max_id?: boolean
     first_name?: boolean
     second_name?: boolean
     login?: boolean
@@ -3416,6 +3438,7 @@ export namespace Prisma {
   export type usersSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     telegram_id?: boolean
+    max_id?: boolean
     first_name?: boolean
     second_name?: boolean
     login?: boolean
@@ -3424,12 +3447,13 @@ export namespace Prisma {
   export type usersSelectScalar = {
     id?: boolean
     telegram_id?: boolean
+    max_id?: boolean
     first_name?: boolean
     second_name?: boolean
     login?: boolean
   }
 
-  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "telegram_id" | "first_name" | "second_name" | "login", ExtArgs["result"]["users"]>
+  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "telegram_id" | "max_id" | "first_name" | "second_name" | "login", ExtArgs["result"]["users"]>
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     servers?: boolean | users$serversArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -3444,7 +3468,8 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      telegram_id: string
+      telegram_id: string | null
+      max_id: string | null
       first_name: string
       second_name: string | null
       login: string | null
@@ -3874,6 +3899,7 @@ export namespace Prisma {
   interface usersFieldRefs {
     readonly id: FieldRef<"users", 'String'>
     readonly telegram_id: FieldRef<"users", 'String'>
+    readonly max_id: FieldRef<"users", 'String'>
     readonly first_name: FieldRef<"users", 'String'>
     readonly second_name: FieldRef<"users", 'String'>
     readonly login: FieldRef<"users", 'String'>
@@ -4336,6 +4362,7 @@ export namespace Prisma {
     interval: 'interval',
     server_id: 'server_id',
     chat_id: 'chat_id',
+    messenger: 'messenger',
     id: 'id'
   };
 
@@ -4345,6 +4372,7 @@ export namespace Prisma {
   export const UsersScalarFieldEnum: {
     id: 'id',
     telegram_id: 'telegram_id',
+    max_id: 'max_id',
     first_name: 'first_name',
     second_name: 'second_name',
     login: 'login'
@@ -4474,6 +4502,7 @@ export namespace Prisma {
     interval?: StringFilter<"task"> | string
     server_id?: UuidFilter<"task"> | string
     chat_id?: StringFilter<"task"> | string
+    messenger?: StringFilter<"task"> | string
     id?: UuidFilter<"task"> | string
     servers?: XOR<ServersScalarRelationFilter, serversWhereInput>
   }
@@ -4483,6 +4512,7 @@ export namespace Prisma {
     interval?: SortOrder
     server_id?: SortOrder
     chat_id?: SortOrder
+    messenger?: SortOrder
     id?: SortOrder
     servers?: serversOrderByWithRelationInput
   }
@@ -4496,6 +4526,7 @@ export namespace Prisma {
     interval?: StringFilter<"task"> | string
     server_id?: UuidFilter<"task"> | string
     chat_id?: StringFilter<"task"> | string
+    messenger?: StringFilter<"task"> | string
     servers?: XOR<ServersScalarRelationFilter, serversWhereInput>
   }, "id">
 
@@ -4504,6 +4535,7 @@ export namespace Prisma {
     interval?: SortOrder
     server_id?: SortOrder
     chat_id?: SortOrder
+    messenger?: SortOrder
     id?: SortOrder
     _count?: taskCountOrderByAggregateInput
     _max?: taskMaxOrderByAggregateInput
@@ -4518,6 +4550,7 @@ export namespace Prisma {
     interval?: StringWithAggregatesFilter<"task"> | string
     server_id?: UuidWithAggregatesFilter<"task"> | string
     chat_id?: StringWithAggregatesFilter<"task"> | string
+    messenger?: StringWithAggregatesFilter<"task"> | string
     id?: UuidWithAggregatesFilter<"task"> | string
   }
 
@@ -4526,7 +4559,8 @@ export namespace Prisma {
     OR?: usersWhereInput[]
     NOT?: usersWhereInput | usersWhereInput[]
     id?: UuidFilter<"users"> | string
-    telegram_id?: StringFilter<"users"> | string
+    telegram_id?: StringNullableFilter<"users"> | string | null
+    max_id?: StringNullableFilter<"users"> | string | null
     first_name?: StringFilter<"users"> | string
     second_name?: StringNullableFilter<"users"> | string | null
     login?: StringNullableFilter<"users"> | string | null
@@ -4535,7 +4569,8 @@ export namespace Prisma {
 
   export type usersOrderByWithRelationInput = {
     id?: SortOrder
-    telegram_id?: SortOrder
+    telegram_id?: SortOrderInput | SortOrder
+    max_id?: SortOrderInput | SortOrder
     first_name?: SortOrder
     second_name?: SortOrderInput | SortOrder
     login?: SortOrderInput | SortOrder
@@ -4545,6 +4580,7 @@ export namespace Prisma {
   export type usersWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     telegram_id?: string
+    max_id?: string
     AND?: usersWhereInput | usersWhereInput[]
     OR?: usersWhereInput[]
     NOT?: usersWhereInput | usersWhereInput[]
@@ -4552,11 +4588,12 @@ export namespace Prisma {
     second_name?: StringNullableFilter<"users"> | string | null
     login?: StringNullableFilter<"users"> | string | null
     servers?: ServersListRelationFilter
-  }, "id" | "telegram_id">
+  }, "id" | "telegram_id" | "max_id">
 
   export type usersOrderByWithAggregationInput = {
     id?: SortOrder
-    telegram_id?: SortOrder
+    telegram_id?: SortOrderInput | SortOrder
+    max_id?: SortOrderInput | SortOrder
     first_name?: SortOrder
     second_name?: SortOrderInput | SortOrder
     login?: SortOrderInput | SortOrder
@@ -4570,7 +4607,8 @@ export namespace Prisma {
     OR?: usersScalarWhereWithAggregatesInput[]
     NOT?: usersScalarWhereWithAggregatesInput | usersScalarWhereWithAggregatesInput[]
     id?: UuidWithAggregatesFilter<"users"> | string
-    telegram_id?: StringWithAggregatesFilter<"users"> | string
+    telegram_id?: StringNullableWithAggregatesFilter<"users"> | string | null
+    max_id?: StringNullableWithAggregatesFilter<"users"> | string | null
     first_name?: StringWithAggregatesFilter<"users"> | string
     second_name?: StringNullableWithAggregatesFilter<"users"> | string | null
     login?: StringNullableWithAggregatesFilter<"users"> | string | null
@@ -4632,6 +4670,7 @@ export namespace Prisma {
     name: string
     interval: string
     chat_id: string
+    messenger?: string
     id?: string
     servers: serversCreateNestedOneWithoutTaskInput
   }
@@ -4641,6 +4680,7 @@ export namespace Prisma {
     interval: string
     server_id: string
     chat_id: string
+    messenger?: string
     id?: string
   }
 
@@ -4648,6 +4688,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     interval?: StringFieldUpdateOperationsInput | string
     chat_id?: StringFieldUpdateOperationsInput | string
+    messenger?: StringFieldUpdateOperationsInput | string
     id?: StringFieldUpdateOperationsInput | string
     servers?: serversUpdateOneRequiredWithoutTaskNestedInput
   }
@@ -4657,6 +4698,7 @@ export namespace Prisma {
     interval?: StringFieldUpdateOperationsInput | string
     server_id?: StringFieldUpdateOperationsInput | string
     chat_id?: StringFieldUpdateOperationsInput | string
+    messenger?: StringFieldUpdateOperationsInput | string
     id?: StringFieldUpdateOperationsInput | string
   }
 
@@ -4665,6 +4707,7 @@ export namespace Prisma {
     interval: string
     server_id: string
     chat_id: string
+    messenger?: string
     id?: string
   }
 
@@ -4672,6 +4715,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     interval?: StringFieldUpdateOperationsInput | string
     chat_id?: StringFieldUpdateOperationsInput | string
+    messenger?: StringFieldUpdateOperationsInput | string
     id?: StringFieldUpdateOperationsInput | string
   }
 
@@ -4680,12 +4724,14 @@ export namespace Prisma {
     interval?: StringFieldUpdateOperationsInput | string
     server_id?: StringFieldUpdateOperationsInput | string
     chat_id?: StringFieldUpdateOperationsInput | string
+    messenger?: StringFieldUpdateOperationsInput | string
     id?: StringFieldUpdateOperationsInput | string
   }
 
   export type usersCreateInput = {
     id?: string
-    telegram_id: string
+    telegram_id?: string | null
+    max_id?: string | null
     first_name: string
     second_name?: string | null
     login?: string | null
@@ -4694,7 +4740,8 @@ export namespace Prisma {
 
   export type usersUncheckedCreateInput = {
     id?: string
-    telegram_id: string
+    telegram_id?: string | null
+    max_id?: string | null
     first_name: string
     second_name?: string | null
     login?: string | null
@@ -4703,7 +4750,8 @@ export namespace Prisma {
 
   export type usersUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    telegram_id?: StringFieldUpdateOperationsInput | string
+    telegram_id?: NullableStringFieldUpdateOperationsInput | string | null
+    max_id?: NullableStringFieldUpdateOperationsInput | string | null
     first_name?: StringFieldUpdateOperationsInput | string
     second_name?: NullableStringFieldUpdateOperationsInput | string | null
     login?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4712,7 +4760,8 @@ export namespace Prisma {
 
   export type usersUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    telegram_id?: StringFieldUpdateOperationsInput | string
+    telegram_id?: NullableStringFieldUpdateOperationsInput | string | null
+    max_id?: NullableStringFieldUpdateOperationsInput | string | null
     first_name?: StringFieldUpdateOperationsInput | string
     second_name?: NullableStringFieldUpdateOperationsInput | string | null
     login?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4721,7 +4770,8 @@ export namespace Prisma {
 
   export type usersCreateManyInput = {
     id?: string
-    telegram_id: string
+    telegram_id?: string | null
+    max_id?: string | null
     first_name: string
     second_name?: string | null
     login?: string | null
@@ -4729,7 +4779,8 @@ export namespace Prisma {
 
   export type usersUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    telegram_id?: StringFieldUpdateOperationsInput | string
+    telegram_id?: NullableStringFieldUpdateOperationsInput | string | null
+    max_id?: NullableStringFieldUpdateOperationsInput | string | null
     first_name?: StringFieldUpdateOperationsInput | string
     second_name?: NullableStringFieldUpdateOperationsInput | string | null
     login?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4737,7 +4788,8 @@ export namespace Prisma {
 
   export type usersUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    telegram_id?: StringFieldUpdateOperationsInput | string
+    telegram_id?: NullableStringFieldUpdateOperationsInput | string | null
+    max_id?: NullableStringFieldUpdateOperationsInput | string | null
     first_name?: StringFieldUpdateOperationsInput | string
     second_name?: NullableStringFieldUpdateOperationsInput | string | null
     login?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4849,6 +4901,7 @@ export namespace Prisma {
     interval?: SortOrder
     server_id?: SortOrder
     chat_id?: SortOrder
+    messenger?: SortOrder
     id?: SortOrder
   }
 
@@ -4857,6 +4910,7 @@ export namespace Prisma {
     interval?: SortOrder
     server_id?: SortOrder
     chat_id?: SortOrder
+    messenger?: SortOrder
     id?: SortOrder
   }
 
@@ -4865,6 +4919,7 @@ export namespace Prisma {
     interval?: SortOrder
     server_id?: SortOrder
     chat_id?: SortOrder
+    messenger?: SortOrder
     id?: SortOrder
   }
 
@@ -4901,6 +4956,7 @@ export namespace Prisma {
   export type usersCountOrderByAggregateInput = {
     id?: SortOrder
     telegram_id?: SortOrder
+    max_id?: SortOrder
     first_name?: SortOrder
     second_name?: SortOrder
     login?: SortOrder
@@ -4909,6 +4965,7 @@ export namespace Prisma {
   export type usersMaxOrderByAggregateInput = {
     id?: SortOrder
     telegram_id?: SortOrder
+    max_id?: SortOrder
     first_name?: SortOrder
     second_name?: SortOrder
     login?: SortOrder
@@ -4917,6 +4974,7 @@ export namespace Prisma {
   export type usersMinOrderByAggregateInput = {
     id?: SortOrder
     telegram_id?: SortOrder
+    max_id?: SortOrder
     first_name?: SortOrder
     second_name?: SortOrder
     login?: SortOrder
@@ -5171,7 +5229,8 @@ export namespace Prisma {
 
   export type usersCreateWithoutServersInput = {
     id?: string
-    telegram_id: string
+    telegram_id?: string | null
+    max_id?: string | null
     first_name: string
     second_name?: string | null
     login?: string | null
@@ -5179,7 +5238,8 @@ export namespace Prisma {
 
   export type usersUncheckedCreateWithoutServersInput = {
     id?: string
-    telegram_id: string
+    telegram_id?: string | null
+    max_id?: string | null
     first_name: string
     second_name?: string | null
     login?: string | null
@@ -5194,6 +5254,7 @@ export namespace Prisma {
     name: string
     interval: string
     chat_id: string
+    messenger?: string
     id?: string
   }
 
@@ -5201,6 +5262,7 @@ export namespace Prisma {
     name: string
     interval: string
     chat_id: string
+    messenger?: string
     id?: string
   }
 
@@ -5227,7 +5289,8 @@ export namespace Prisma {
 
   export type usersUpdateWithoutServersInput = {
     id?: StringFieldUpdateOperationsInput | string
-    telegram_id?: StringFieldUpdateOperationsInput | string
+    telegram_id?: NullableStringFieldUpdateOperationsInput | string | null
+    max_id?: NullableStringFieldUpdateOperationsInput | string | null
     first_name?: StringFieldUpdateOperationsInput | string
     second_name?: NullableStringFieldUpdateOperationsInput | string | null
     login?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5235,7 +5298,8 @@ export namespace Prisma {
 
   export type usersUncheckedUpdateWithoutServersInput = {
     id?: StringFieldUpdateOperationsInput | string
-    telegram_id?: StringFieldUpdateOperationsInput | string
+    telegram_id?: NullableStringFieldUpdateOperationsInput | string | null
+    max_id?: NullableStringFieldUpdateOperationsInput | string | null
     first_name?: StringFieldUpdateOperationsInput | string
     second_name?: NullableStringFieldUpdateOperationsInput | string | null
     login?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5265,6 +5329,7 @@ export namespace Prisma {
     interval?: StringFilter<"task"> | string
     server_id?: UuidFilter<"task"> | string
     chat_id?: StringFilter<"task"> | string
+    messenger?: StringFilter<"task"> | string
     id?: UuidFilter<"task"> | string
   }
 
@@ -5366,6 +5431,7 @@ export namespace Prisma {
     name: string
     interval: string
     chat_id: string
+    messenger?: string
     id?: string
   }
 
@@ -5373,6 +5439,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     interval?: StringFieldUpdateOperationsInput | string
     chat_id?: StringFieldUpdateOperationsInput | string
+    messenger?: StringFieldUpdateOperationsInput | string
     id?: StringFieldUpdateOperationsInput | string
   }
 
@@ -5380,6 +5447,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     interval?: StringFieldUpdateOperationsInput | string
     chat_id?: StringFieldUpdateOperationsInput | string
+    messenger?: StringFieldUpdateOperationsInput | string
     id?: StringFieldUpdateOperationsInput | string
   }
 
@@ -5387,6 +5455,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     interval?: StringFieldUpdateOperationsInput | string
     chat_id?: StringFieldUpdateOperationsInput | string
+    messenger?: StringFieldUpdateOperationsInput | string
     id?: StringFieldUpdateOperationsInput | string
   }
 

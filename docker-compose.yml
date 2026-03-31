@@ -84,3 +84,14 @@ services:
     environment:
       RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbitmq:5672
       BOT_TOKEN: ${BOT_TOKEN}
+
+  max-bot:
+    image: ghcr.io/lopsikom/max-bot:latest
+    container_name: max-bot
+    restart: always
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbitmq:5672
+      MAX_BOT_TOKEN: ${MAX_BOT_TOKEN}

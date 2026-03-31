@@ -133,12 +133,14 @@ exports.Prisma.TaskScalarFieldEnum = {
   interval: 'interval',
   server_id: 'server_id',
   chat_id: 'chat_id',
+  messenger: 'messenger',
   id: 'id'
 };
 
 exports.Prisma.UsersScalarFieldEnum = {
   id: 'id',
   telegram_id: 'telegram_id',
+  max_id: 'max_id',
   first_name: 'first_name',
   second_name: 'second_name',
   login: 'login'

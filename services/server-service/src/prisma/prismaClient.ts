@@ -2,10 +2,11 @@ import { PrismaClient, users, servers } from "./generated/prisma";
 
 export const prisma = new PrismaClient();
 
-export async function createNewUser(id: string, first_name: string, second_name?: string | null, login?: string | null): Promise<users> {
+export async function createNewUser(telegram_id: string | null | undefined, first_name: string, second_name?: string | null, login?: string | null, max_id?: string | null): Promise<users> {
     const response = await prisma.users.create({
         data: {
-            telegram_id: id,
+            telegram_id: telegram_id || null,
+            max_id: max_id || null,
             first_name: first_name,
             second_name: second_name,
             login: login
@@ -17,6 +18,13 @@ export async function createNewUser(id: string, first_name: string, second_name?
 export async function getUserByTgId(id: string): Promise<users | null> {
     const response = await prisma.users.findFirst({
         where: { telegram_id: id }
+    })
+    return response
+}
+
+export async function getUserByMaxId(id: string): Promise<users | null> {
+    const response = await prisma.users.findFirst({
+        where: { max_id: id }
     })
     return response
 }
@@ -73,13 +81,14 @@ export async function deleteServer(id: string) {
     })
 }
 
-export async function addTask(server_id: string, chat_id: string, task_name: string, interval: string) {
+export async function addTask(server_id: string, chat_id: string, task_name: string, interval: string, messenger: string = "telegram") {
     const response = await prisma.task.create({
         data: {
             name: task_name,
             interval: interval,
             server_id: server_id,
-            chat_id: chat_id
+            chat_id: chat_id,
+            messenger: messenger
         }
     })
     return response

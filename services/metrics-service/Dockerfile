@@ -13,4 +13,4 @@ RUN pnpm install --frozen-lockfile
 COPY packages/shared ./packages/shared
 COPY services/metrics-service ./services/metrics-service
 
-CMD ["pnpm", "--filter", "server-service", "dev"]
+CMD ["pnpm", "--filter", "metrics-service", "dev"]

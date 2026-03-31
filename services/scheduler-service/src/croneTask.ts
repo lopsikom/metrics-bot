@@ -1,10 +1,10 @@
 import cron, { ScheduledTask } from "node-cron"
-import { AddTask, allTask, DeleteTask, getServerMetrics, sendMessageTelegram } from "./utils"
+import { AddTask, allTask, DeleteTask, getServerMetrics, sendMessage, sendMessageTelegram } from "./utils"
 import { croneTime } from "@bot/shared/src/events/crone/crone"
 
 class CroneTask { //Вынести в отдельный сервис
     private emitTaskList : Record<string, ScheduledTask> = {}
-    async emitTask(host : string, server_id : string, first_name : string, chat_id : string, interval : string, name : string){
+    async emitTask(host : string, server_id : string, first_name : string, chat_id : string, interval : string, name : string, messenger : string = "telegram"){
         const options = {
             name : `DefaultTask_${first_name}_${name}_${interval}_${new Date().getMilliseconds()}`,
             noOverlap : true
@@ -12,16 +12,16 @@ class CroneTask { //Вынести в отдельный сервис
        const task = cron.createTask(interval, async () => {
           try{
             const metrics = await getServerMetrics(host)
-            sendMessageTelegram(chat_id,`Напоминание: ${croneTime[interval]}\n📊 Метрики сервера ${host}:\n\n` +
+            sendMessage(chat_id,`Напоминание: ${croneTime[interval]}\n📊 Метрики сервера ${host}:\n\n` +
                 `🧠 CPU: ${(metrics.cpu * 100).toFixed(1)}%\n` +
                 `💾 RAM: ${(metrics.ram * 100).toFixed(1)}%\n` +
-                `📀 Disk: ${(metrics.disk * 100).toFixed(1)}%`)
+                `📀 Disk: ${(metrics.disk * 100).toFixed(1)}%`, messenger)
           }
           catch(e){
             console.error(e)
           }
        }, options)
-       const taskDB = await AddTask(server_id, chat_id.toString() ?? "123", task.name ?? "", interval)
+       const taskDB = await AddTask(server_id, chat_id.toString() ?? "123", task.name ?? "", interval, messenger)
        task.start()
        this.emitTaskList[taskDB.id] = task
     }
@@ -51,10 +51,10 @@ class CroneTask { //Вынести в отдельный сервис
                     console.log("awdawd");
                     const metrics = await getServerMetrics(t.servers.host)
                     console.log(metrics)
-                    sendMessageTelegram(t.chat_id,`Напоминание: ${croneTime[t.interval]}\n📊 Метрики сервера ${t.servers.host}:\n\n` +
+                    sendMessage(t.chat_id,`Напоминание: ${croneTime[t.interval]}\n📊 Метрики сервера ${t.servers.host}:\n\n` +
                         `🧠 CPU: ${(metrics.cpu * 100).toFixed(1)}%\n` +
                         `💾 RAM: ${(metrics.ram * 100).toFixed(1)}%\n` +
-                        `📀 Disk: ${(metrics.disk * 100).toFixed(1)}%`)
+                        `📀 Disk: ${(metrics.disk * 100).toFixed(1)}%`, t.messenger)
                 }
                 catch(e){
                     console.error(e)

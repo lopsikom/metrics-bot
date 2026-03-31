@@ -14,6 +14,7 @@ export const scene = new Scenes.WizardScene<any>(ScenesEnum.ADD_SERVER, //Доб
     return ctx.wizard.next()
 },  (ctx) =>{
     ctx.wizard.state.server_ip = ctx.message!.text
+    console.log(ctx.user)
     addServerPrisma(ctx.user?.id, ctx.wizard.state.name, ctx.wizard.state.server_ip)
     addTargetConfig(ctx.wizard.state.server_ip, ctx.user!.first_name)
     ctx.reply(`${ctx.wizard.state.name} по адресу ${ctx.wizard.state.server_ip} успешно зарегистрирован`)

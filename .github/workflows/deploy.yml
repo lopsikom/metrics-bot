@@ -23,6 +23,9 @@ jobs:
           - name: scheduler-service
             context: .
             dockerfile: services/scheduler-service/Dockerfile
+          - name: max-bot
+            context: .
+            dockerfile: services/max-bot/Dockerfile
 
     steps:
       - name: Checkout
@@ -74,6 +77,7 @@ jobs:
             echo "RABBITMQ_PASS=${{ secrets.RABBITMQ_PASS }}" >> .env
             echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
             echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" >> .env
+            echo "MAX_BOT_TOKEN=${{ secrets.MAX_BOT_TOKEN }}" >> .env
             docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
             docker compose pull
             docker compose up -d
