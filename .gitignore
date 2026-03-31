@@ -4,5 +4,5 @@ node_modules/
 
 .claude/
 
-/src/prisma/generated/prisma
-/prisma/migrations
+**/prisma/generated
+
