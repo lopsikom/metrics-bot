@@ -12,5 +12,6 @@ RUN pnpm install --frozen-lockfile
 
 COPY packages/shared ./packages/shared
 COPY services/server-service ./services/server-service
+RUN pnpm --filter server-service db:generate
 
 CMD ["pnpm", "--filter", "server-service", "dev"]

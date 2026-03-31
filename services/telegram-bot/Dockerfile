@@ -13,6 +13,4 @@ RUN pnpm install --frozen-lockfile
 COPY packages/shared ./packages/shared
 COPY services/telegram-bot ./services/telegram-bot
 
-RUN pnpm --filter server-service db:generate
-
 CMD ["pnpm", "--filter", "telegram-bot", "dev"]
