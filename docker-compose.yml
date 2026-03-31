@@ -1,7 +1,7 @@
+
 volumes:
   prometheus-data:
   rabbitmq_data:
-
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -31,7 +31,6 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /home/lopsik/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/etc/prometheus
 
   server-service:
