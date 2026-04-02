@@ -1,6 +1,7 @@
 import { Bot } from "@maxhub/max-bot-api"
 import dotenv from "dotenv"
 import { registerStartHandler } from "./handlers/start"
+import { registerCommands } from "./handlers/commands"
 import { registerMenuHandlers } from "./handlers/menuHandlers"
 import { registerServerActions } from "./handlers/serverAction"
 import { registerTaskActions } from "./handlers/taskAction"
@@ -15,6 +16,7 @@ dotenv.config()
 const bot = new Bot(process.env.MAX_BOT_TOKEN ?? "")
 
 registerStartHandler(bot)
+registerCommands(bot)
 registerMenuHandlers(bot)
 registerServerActions(bot)
 registerTaskActions(bot)
