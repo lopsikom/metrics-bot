@@ -37,8 +37,9 @@ export async function viewServers(reply: Reply, user: UserPrisma) {
 
 export async function viewAccount(reply: Reply, user: UserPrisma, displayName: string, userId: number) {
     const serversCount = await getServerCountUser(user.id)
+    const linked = user.telegram_id ? `Telegram: привязан` : `Telegram: не привязан`
     await reply(
-        `Имя: ${displayName}\nID: ${userId}\nКоличество серверов: ${serversCount}`,
+        `Имя: ${displayName}\nMax ID: ${userId}\nКоличество серверов: ${serversCount}\n${linked}`,
         { attachments: [getMainMenuKeyboard()] }
     )
 }

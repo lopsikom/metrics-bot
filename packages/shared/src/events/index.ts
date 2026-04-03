@@ -1,6 +1,6 @@
 import { IServerInfo, IServerMetrics } from "./prometheus/api";
 import { IAddRemoveTarget, IChangeTarget, ICheckConfig } from "./prometheus/config";
-import {ServerPrisma, ServerPrismaAdd, TaskPrisma, TaskPrismaAdd, TaskPrismaWithServer, UserPrisma, UserPrismaAdd } from "./server/serverEvent";
+import {ServerPrisma, ServerPrismaAdd, TaskPrisma, TaskPrismaAdd, TaskPrismaWithServer, UserPrisma, UserPrismaAdd, LinkAccountData, LinkAccountResult } from "./server/serverEvent";
 import {IEmitTask} from "./crone/crone"
 
 export interface IRabbitEvent<T>{
@@ -59,6 +59,9 @@ export enum QueueEvent {
     PRISMA_GET_USER_BY_MAX_ID = "prisma.getUserByMaxId",
     PRISMA_GET_USER_BY_MAX_ID_RESPONSE = "prisma.getUserByMaxId.response",
 
+    PRISMA_LINK_ACCOUNT = "prisma.linkAccount",
+    PRISMA_LINK_ACCOUNT_RESPONSE = "prisma.linkAccount.response",
+
     CRON_EMIT_TASK = "cron.emitTask",
     CRON_EMIT_TASK_RESPONSE = "cron.emitTask.response",
     CRON_UN_EMIT_TASK = "cron.UnEmitTask",
@@ -89,6 +92,7 @@ export interface QueueEventConsumerMap {
     [QueueEvent.TELEGRAM_SEND_MESSAGE] : IRabbitEvent<{id : string, message : string}>,
     [QueueEvent.MAX_SEND_MESSAGE] : IRabbitEvent<{id : string, message : string}>,
     [QueueEvent.PRISMA_GET_USER_BY_MAX_ID] : IRabbitEvent<string>,
+    [QueueEvent.PRISMA_LINK_ACCOUNT] : IRabbitEvent<LinkAccountData>,
     [QueueEvent.CRON_EMIT_TASK] : IRabbitEvent<IEmitTask>,
     [QueueEvent.CRON_UN_EMIT_TASK] : IRabbitEvent<string>
 }
@@ -117,6 +121,7 @@ export interface QueueEventResponseMap {
     [QueueEvent.TELEGRAM_SEND_MESSAGE_RESPONSE] : IRabbitEvent<void>,
     [QueueEvent.MAX_SEND_MESSAGE_RESPONSE] : IRabbitEvent<void>,
     [QueueEvent.PRISMA_GET_USER_BY_MAX_ID_RESPONSE] : IRabbitEvent<UserPrisma | null>,
+    [QueueEvent.PRISMA_LINK_ACCOUNT_RESPONSE] : IRabbitEvent<LinkAccountResult>,
     [QueueEvent.CRON_EMIT_TASK_RESPONSE] : IRabbitEvent<void>,
     [QueueEvent.CRON_UN_EMIT_TASK_RESPONSE] : IRabbitEvent<boolean>
 }
@@ -144,6 +149,7 @@ export type QueueEventRequestToResponse = {
     [QueueEvent.TELEGRAM_SEND_MESSAGE] :                QueueEvent.TELEGRAM_SEND_MESSAGE_RESPONSE,
     [QueueEvent.MAX_SEND_MESSAGE] :                    QueueEvent.MAX_SEND_MESSAGE_RESPONSE,
     [QueueEvent.PRISMA_GET_USER_BY_MAX_ID] :           QueueEvent.PRISMA_GET_USER_BY_MAX_ID_RESPONSE,
+    [QueueEvent.PRISMA_LINK_ACCOUNT] :                 QueueEvent.PRISMA_LINK_ACCOUNT_RESPONSE,
     [QueueEvent.CRON_EMIT_TASK] :                       QueueEvent.CRON_EMIT_TASK_RESPONSE,
     [QueueEvent.CRON_UN_EMIT_TASK] :                    QueueEvent.CRON_UN_EMIT_TASK_RESPONSE
 }

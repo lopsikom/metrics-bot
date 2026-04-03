@@ -4,6 +4,12 @@ import { createNewUser, getUserById, getUserByMaxId } from "../utils/utils"
 const userCache = new Map<number, { userId: string }>()
 const userDataCache = new Map<string, UserPrisma>()
 
+export function invalidateUserCache(maxUserId: number) {
+    const cached = userCache.get(maxUserId)
+    if (cached) userDataCache.delete(cached.userId)
+    userCache.delete(maxUserId)
+}
+
 export async function resolveUser(maxUserId: number, firstName: string, lastName?: string, username?: string): Promise<UserPrisma | null> {
     const cached = userCache.get(maxUserId)
     if (cached) {

@@ -45,3 +45,14 @@ export interface TaskPrismaAdd{
     name : string,
     messenger? : string
 }
+export interface LinkAccountData{
+    source_messenger : "telegram" | "max",
+    source_id : string,
+    target_messenger : "telegram" | "max",
+    target_id : string,
+}
+export interface LinkAccountResult{
+    success : boolean,
+    error? : string,
+    user? : UserPrisma
+}

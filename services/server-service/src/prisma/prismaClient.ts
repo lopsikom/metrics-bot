@@ -118,3 +118,55 @@ export async function deleteTask(task_id: string) {
     })
     return response
 }
+
+export async function linkAccount(
+    sourceMessenger: "telegram" | "max",
+    sourceId: string,
+    targetMessenger: "telegram" | "max",
+    targetId: string
+): Promise<{ success: boolean, error?: string, user?: users }> {
+
+    const targetField = targetMessenger === "telegram" ? "telegram_id" : "max_id"
+    const sourceField = sourceMessenger === "telegram" ? "telegram_id" : "max_id"
+
+    const targetUser = await prisma.users.findFirst({
+        where: { [targetField]: targetId }
+    })
+
+    if (!targetUser) {
+        const sourceUser = await prisma.users.findFirst({
+            where: { [sourceField]: sourceId }
+        })
+        if (!sourceUser) return { success: false, error: "Пользователь не найден" }
+        if (sourceUser[targetField]) return { success: false, error: "Аккаунт уже привязан" }
+
+        const updated = await prisma.users.update({
+            where: { id: sourceUser.id },
+            data: { [targetField]: targetId }
+        })
+        return { success: true, user: updated }
+    }
+
+    if (targetUser[sourceField]) {
+        return { success: false, error: "Этот аккаунт уже привязан к другому пользователю" }
+    }
+
+    const sourceUser = await prisma.users.findFirst({
+        where: { [sourceField]: sourceId }
+    })
+
+    if (sourceUser && sourceUser.id !== targetUser.id) {
+        await prisma.servers.updateMany({
+            where: { user_id: sourceUser.id },
+            data: { user_id: targetUser.id }
+        })
+        await prisma.users.delete({ where: { id: sourceUser.id } })
+    }
+
+    const updated = await prisma.users.update({
+        where: { id: targetUser.id },
+        data: { [sourceField]: sourceId }
+    })
+
+    return { success: true, user: updated }
+}

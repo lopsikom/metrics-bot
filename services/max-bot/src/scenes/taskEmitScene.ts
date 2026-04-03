@@ -2,6 +2,7 @@ import { Keyboard, type Bot } from "@maxhub/max-bot-api"
 import sceneManager from "./sceneManager"
 import type { SceneDefinition } from "./sceneManager"
 import { emitTask, getServerPrisma } from "../utils/utils"
+import { resolveUser } from "../middleware/userMiddleware"
 
 export function registerTaskEmitScene(bot: Bot) {
     const scene: SceneDefinition = {
@@ -39,7 +40,9 @@ export function registerTaskEmitScene(bot: Bot) {
             return
         }
 
-        await emitTask(server.host, server.id, ctx.user!.name!, state.data.interval, userId.toString(), state.data.name)
+        const prismaUser = await resolveUser(userId, ctx.user!.name ?? "User")
+        const telegramChatId = prismaUser?.telegram_id ?? undefined
+        await emitTask(server.host, server.id, ctx.user!.name!, state.data.interval, userId.toString(), state.data.name, telegramChatId)
         await ctx.reply("Уведомление зарегистрировано")
         sceneManager.leave(userId)
     })

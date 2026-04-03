@@ -23,11 +23,18 @@ handlersCollector.addHandlers({
 {
     type : 'inlineKeyboard',
     trigger : inlineKeyboardEvent.START,
-    handler : (ctx) =>{ 
+    handler : (ctx) =>{
         if(ctx.from){
             createNewUser(ctx.from.id.toString(), ctx.from.first_name, ctx.from.last_name ?? '', ctx.from.username ?? '')
         }
-        ctx.reply('Начало', Markup.keyboard([[ReplyKeyboardEvents.SERVERS, ReplyKeyboardEvents.ACCOUNT], 
+        ctx.reply('Начало', Markup.keyboard([[ReplyKeyboardEvents.SERVERS, ReplyKeyboardEvents.ACCOUNT],
             [ReplyKeyboardEvents.ABOUT, ReplyKeyboardEvents.HELP]]).resize())
+    }
+},
+{
+    type : 'inlineKeyboard',
+    trigger : inlineKeyboardEvent.LINK_ACCOUNT,
+    handler : (ctx) => {
+        ctx.scene.enter(ScenesEnum.LINK_ACCOUNT)
     }
 })

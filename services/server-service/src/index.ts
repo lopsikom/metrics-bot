@@ -108,5 +108,13 @@ await consume (QueueEvent.PRISMA_GET_TASKS_BY_SERVER, async(data) => {
 await consume (QueueEvent.PRISMA_DELETE_TASK, async(data) => {
     const response = await prisma.deleteTask(data.data);
 })
+await consume(QueueEvent.PRISMA_LINK_ACCOUNT, async (data) => {
+    const response = await prisma.linkAccount(data.data.source_messenger, data.data.source_id, data.data.target_messenger, data.data.target_id)
+    await publish<QueueEvent.PRISMA_LINK_ACCOUNT_RESPONSE>(data.replyTo, {replyTo : data.replyTo, data : response}, {
+        listenOnce : true,
+        autoDelete : true,
+        expires : 3600
+    })
+})
 
 console.log("DB-service is running")

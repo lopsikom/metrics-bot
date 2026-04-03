@@ -68,10 +68,22 @@ export async function removeTargeConfig(host : string, first_name : string){
     const response = await addPendingRequest(QueueEvent.PROMETHEUS_CONFIG_REMOVE_TARGET, {server_ip : host, name : first_name})
     return response.data;
 }
-export async function emitTask(host : string, server_id : string, first_name : string, interval : string, chat_id : string, name : string){
-    await publish(QueueEvent.CRON_EMIT_TASK, {replyTo : server_id, data : {host, server_id, first_name, interval, chat_id, name}})
+export async function emitTask(host : string, server_id : string, first_name : string, interval : string, chat_id : string, name : string, maxChatId? : string){
+    await publish(QueueEvent.CRON_EMIT_TASK, {replyTo : server_id, data : {host, server_id, first_name, interval, chat_id, name, messenger: "telegram"}})
+    if (maxChatId) {
+        await publish(QueueEvent.CRON_EMIT_TASK, {replyTo : server_id, data : {host, server_id, first_name, interval, chat_id: maxChatId, name, messenger: "max"}})
+    }
 }
 export async function unEmitTask(id : string) {
     const response = await addPendingRequest(QueueEvent.CRON_UN_EMIT_TASK, id);
     return response.data;
-} 
+}
+export async function linkAccount(sourceId: string, targetId: string) {
+    const response = await addPendingRequest(QueueEvent.PRISMA_LINK_ACCOUNT, {
+        source_messenger: "telegram" as const,
+        source_id: sourceId,
+        target_messenger: "max" as const,
+        target_id: targetId
+    });
+    return response.data;
+}

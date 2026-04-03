@@ -9,6 +9,7 @@ import { registerAddServerScene } from "./scenes/addServerScene"
 import { registerChangeNameScene } from "./scenes/changeNameScene"
 import { registerChangeHostScene } from "./scenes/changeHostScene"
 import { registerTaskEmitScene } from "./scenes/taskEmitScene"
+import { registerLinkAccountScene } from "./scenes/linkAccountScene"
 import sceneManager from "./scenes/sceneManager"
 
 dotenv.config()
@@ -25,6 +26,7 @@ registerAddServerScene(bot)
 registerChangeNameScene(bot)
 registerChangeHostScene(bot)
 registerTaskEmitScene(bot)
+registerLinkAccountScene(bot)
 
 bot.on("message_created", async (ctx) => {
     const userId = ctx.message?.sender?.user_id

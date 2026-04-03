@@ -52,4 +52,11 @@ export function registerMenuHandlers(bot: Bot) {
         const sceneManager = (await import("../scenes/sceneManager")).default
         sceneManager.enter(userId, "add_server")
     })
+
+    bot.action("link_account", async (ctx) => {
+        const userId = ctx.user?.user_id
+        if (!userId) return
+        const sceneManager = (await import("../scenes/sceneManager")).default
+        sceneManager.enter(userId, "link_account")
+    })
 }

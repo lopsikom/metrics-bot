@@ -13,10 +13,8 @@ handlersCollector.addHandlers({
         const id = ctx.from?.id
         const serversCount = await getServerCountUser(ctx.user?.id ?? '')
         const premium = ctx.from?.is_premium ? "Премиум аккаунт" : "Обычный аккаунт"
-        ctx.reply(`Имя: ${name}\n
-        ID: ${id}\n
-        Тип аккаунта: ${premium}\n
-        Количество серверов ${serversCount}`)
+        const linked = ctx.user?.max_id ? "Max: привязан" : "Max: не привязан"
+        ctx.reply(`Имя: ${name}\nTelegram ID: ${id}\nТип аккаунта: ${premium}\nКоличество серверов: ${serversCount}\n${linked}`)
     }
 },
 {

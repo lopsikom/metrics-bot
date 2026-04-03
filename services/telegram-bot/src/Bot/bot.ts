@@ -8,6 +8,7 @@ import "./Scenes/addServer"
 import "./Scenes/serverTaskEmitScene"
 import "./Scenes/changeServerInfoScenes/changeHostServerScene"
 import "./Scenes/changeServerInfoScenes/changeNameServerScene"
+import "./Scenes/linkAccountScene"
 import dotenv from 'dotenv'
 import WizardUserContext from "./models/userContext"
 

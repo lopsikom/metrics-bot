@@ -1,7 +1,7 @@
 
 import { Markup, Scenes } from "telegraf";
 import ScenesEnum from "../models/Scenes/scenesEnum";
-import { emitTask, getServerPrisma } from "../utils/utils";
+import { emitTask, getServerPrisma, getUserByTgId } from "../utils/utils";
 import handlersCollector from "../services/handlersCollector";
 
 
@@ -32,7 +32,9 @@ scene.action(/TIME_(.+)/, async (ctx) => {
     console.log('server')
     const server = await getServerPrisma(ctx.wizard.state.serverId);
     if(!server) return ctx.scene.leave()
-    await emitTask(server.host, server.id, ctx.from.first_name,ctx.wizard.state.interval, ctx.chat!.id.toString(), ctx.wizard.state.name)
+    const user = ctx.user ?? await getUserByTgId(ctx.from.id.toString())
+    const maxChatId = user?.max_id ?? undefined
+    await emitTask(server.host, server.id, ctx.from.first_name, ctx.wizard.state.interval, ctx.chat!.id.toString(), ctx.wizard.state.name, maxChatId)
     ctx.reply("Уведомление зарегистрированно")
     return ctx.scene.leave()
 })
