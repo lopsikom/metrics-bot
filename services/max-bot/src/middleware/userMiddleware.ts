@@ -1,39 +1,27 @@
 import type { UserPrisma } from "@bot/shared"
+import {getRedisData, KeysEnum, setRedisData} from "@bot/shared-redis"
 import { createNewUser, getUserById, getUserByMaxId } from "../utils/utils"
 
-const userCache = new Map<number, { userId: string }>()
-const userDataCache = new Map<string, UserPrisma>()
 
-export function invalidateUserCache(maxUserId: number) {
-    const cached = userCache.get(maxUserId)
-    if (cached) userDataCache.delete(cached.userId)
-    userCache.delete(maxUserId)
-}
 
 export async function resolveUser(maxUserId: number, firstName: string, lastName?: string, username?: string): Promise<UserPrisma | null> {
-    const cached = userCache.get(maxUserId)
-    if (cached) {
-        const cachedUser = userDataCache.get(cached.userId)
-        if (cachedUser) return cachedUser
+    try {
+        const cached = await getRedisData(KeysEnum.USER_BY_MAX_ID, maxUserId.toString())
+        if (cached) {return cached}
 
-        const user = await getUserById(cached.userId)
+        const user = await getUserByMaxId(maxUserId.toString())
         if (user) {
-            userDataCache.set(user.id, user)
+            await setRedisData(KeysEnum.USER_BY_MAX_ID, maxUserId.toString(), user)
             return user
         }
-    }
 
-    const user = await getUserByMaxId(maxUserId.toString())
-    if (user) {
-        userCache.set(maxUserId, { userId: user.id })
-        userDataCache.set(user.id, user)
-        return user
+        const newUser = await createNewUser(maxUserId.toString(), firstName, lastName, username)
+        if (newUser) {
+            await setRedisData(KeysEnum.USER_BY_MAX_ID, maxUserId.toString(), newUser)
+        }
+        return newUser
+    } catch (e) {
+        console.error("resolveUser failed", e)
+        return null
     }
-
-    const newUser = await createNewUser(maxUserId.toString(), firstName, lastName, username)
-    if (newUser) {
-        userCache.set(maxUserId, { userId: newUser.id })
-        userDataCache.set(newUser.id, newUser)
-    }
-    return newUser
 }

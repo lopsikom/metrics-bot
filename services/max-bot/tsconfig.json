@@ -6,9 +6,10 @@
     "rootDir": "../..",
     "outDir": "./dist",
     "baseUrl": ".",
-    "ignoreDeprecations": "5.0",
+    "ignoreDeprecations": "6.0",
     "paths": {
-      "@bot/shared": ["../../packages/shared/src"]
+      "@bot/shared": ["../../packages/shared/src"],
+      "@bot/shared-redis": ["../../packages/shared-redis/src"]
     },
     "strict": true,
     "skipLibCheck": true,

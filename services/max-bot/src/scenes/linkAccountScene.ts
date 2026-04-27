@@ -1,7 +1,6 @@
 import type { Bot } from "@maxhub/max-bot-api"
 import sceneManager from "./sceneManager"
 import { linkAccount } from "../utils/utils"
-import { invalidateUserCache } from "../middleware/userMiddleware"
 
 export function registerLinkAccountScene(bot: Bot) {
     sceneManager.registerScene({
@@ -20,7 +19,6 @@ export function registerLinkAccountScene(bot: Bot) {
 
                 const result = await linkAccount(userId.toString(), telegramId)
                 if (result.success) {
-                    invalidateUserCache(userId)
                     await bot.api.sendMessageToUser(userId, "Аккаунт успешно привязан к Telegram!")
                 } else {
                     await bot.api.sendMessageToUser(userId, `Не удалось привязать: ${result.error}`)

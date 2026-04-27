@@ -9,7 +9,6 @@ process.on("unhandledRejection", (reason) => {
     console.error("Unhandled Rejection:", reason);
 });
 handlersCollector.initHandlers(Bot)
-// await croneTask.initializeEmitTask(Bot)
 Bot.launch()
 console.log("Bot is running")
 

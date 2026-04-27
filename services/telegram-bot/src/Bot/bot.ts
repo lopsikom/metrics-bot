@@ -17,4 +17,13 @@ dotenv.config()
 
 const bot = new Telegraf<WizardUserContext>(process.env.BOT_TOKEN ?? "")
 
+bot.catch(async (err, ctx) => {
+    console.error(`Telegraf error for update ${ctx.updateType}:`, err)
+    try {
+        await ctx.reply("Произошла ошибка. Сервис временно недоступен, попробуйте позже.")
+    } catch (e) {
+        console.error("Failed to send error reply", e)
+    }
+})
+
 export default bot
