@@ -43,6 +43,9 @@ importers:
       '@bot/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@bot/shared-redis':
+        specifier: workspace:*
+        version: link:../../packages/shared-redis
       '@maxhub/max-bot-api':
         specifier: latest
         version: 0.2.2
