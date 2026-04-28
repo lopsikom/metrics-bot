@@ -32,7 +32,17 @@ services:
       - "9090:9090"
     volumes:
       - prometheus-data:/etc/prometheus
-
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   server-service:
     image: ghcr.io/lopsikom/server-service:latest
     container_name: server-service
@@ -80,7 +90,11 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
+      REDIS_URL: redis
+      REDIS_PORT: 6379
       RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbitmq:5672
       BOT_TOKEN: ${BOT_TOKEN}
 
@@ -91,6 +105,10 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
+      REDIS_URL: redis
+      REDIS_PORT: 6379
       RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbitmq:5672
       MAX_BOT_TOKEN: ${MAX_BOT_TOKEN}
