@@ -29,4 +29,3 @@ export async function getRedisData<K extends keyof RedisKeys>(field : K, id :str
     if(!response) return null
     return JSON.parse(response) as RedisKeys[K]
 }
-

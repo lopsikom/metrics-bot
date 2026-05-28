@@ -7,7 +7,7 @@ import { getServersPrisma } from './utils'
 
 dotenv.config()
 
-class PrometheusConfig { //Придумать как передавать user_name (мб через редис)
+class PrometheusConfig {
     private BASE_PATH : string
     private TARGETS_PATH : string
     constructor(){
@@ -61,7 +61,7 @@ class PrometheusConfig { //Придумать как передавать user_n
             const config = await fs.readFile(path.join(this.TARGETS_PATH, `${first_name}.yml`), 'utf8')
             const data = YAML.parse(config) as targetsPrometheus[]
             let added = false
-            if(data[0].targets.length > 0) {
+            if(data[0].targets.length > 0) {                
                 const servers = await getServersPrisma(id)
                 if(!servers.data || servers.data.length < 0) return false
                 for(const s of servers.data){

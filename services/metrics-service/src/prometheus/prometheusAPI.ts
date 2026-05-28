@@ -31,9 +31,13 @@ class PrometheusAPI {
         rate(node_network_transmit_bytes_total{device!="lo"}[1m]))`
         const forksQuery = `node_forks_total{instance="${instance}"}`
 
-        const [cpu, ram, disk, receive, transmit, fork] = await this.promQuery(cpuQuery, ramQuery, diskQuery, receiveNetwork, transmitNetwork, forksQuery)
-        console.log(forksQuery)
-        console.log(fork)
+        const [cpu, ram, disk, receive, transmit, fork] = await this.promQuery(
+            cpuQuery, 
+            ramQuery, 
+            diskQuery, 
+            receiveNetwork, 
+            transmitNetwork, 
+            forksQuery)
         return {
             cpu: Number(cpu?.[0]?.value[1] ?? 0),
             ram: Number(ram?.[0]?.value[1] ?? 0),

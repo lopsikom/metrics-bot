@@ -11,8 +11,7 @@ handlersCollector.addHandlers({
     trigger : /SELECT_SERVER_*/,
     handler : async (ctx) => {
         try{
-            console.log("DAWDAWDAWDw")
-        const result = await checkConfig(ctx.user.id, ctx.from!.first_name)
+        const result = await checkConfig(ctx.user!.id, ctx.from!.first_name)
         if(!result){
             ctx.reply("Произошла ошибка")
             await ctx.answerCbQuery()

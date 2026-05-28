@@ -4,7 +4,7 @@ import ScenesEnum from "../models/Scenes/scenesEnum";
 import { addServerPrisma, addTargetConfig } from "../utils/utils";
 import handlersCollector from "../services/handlersCollector";
 
-export const scene = new Scenes.WizardScene<any>(ScenesEnum.ADD_SERVER, //Добавить валидатор значений
+export const scene = new Scenes.WizardScene<any>(ScenesEnum.ADD_SERVER,
     (ctx) => {
     ctx.reply('Введите название сервера')
     return ctx.wizard.next()

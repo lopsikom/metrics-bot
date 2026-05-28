@@ -12,7 +12,7 @@ handlersCollector.addHandlers({
                 const serverId = getDataFromRegEx(ctx)
                 if(!serverId) return
                 const tasks = await getAllTasksByServer(serverId)
-                if(tasks.length < 0){
+                if(tasks.length === 0){
                     await ctx.reply('Уведомлений для удаления нету')
                     await ctx.reply(`Уведомления не зарегистрированы`,
                             Markup.inlineKeyboard([[Markup.button.callback("Установить новое уведомление", `SERVER_TASK_EMIT_${JSON.stringify(tasks)}`)],[Markup.button.callback("Удалить уведомление", `SERVER_TASK_DELETE_${serverId}`)]])

@@ -35,9 +35,8 @@ bot.on("message_created", async (ctx) => {
     if (!text) return
 
     const handled = await sceneManager.handleMessage(userId, text)
-    if (!handled) {
-        // Сообщение вне сцены — игнорируем или можно показать меню
-    }
+    // if (!handled) {
+    // }
 })
 
 export default bot
