@@ -9,7 +9,7 @@ COPY packages/shared/package.json ./packages/shared/
 COPY packages/shared-redis/package.json ./packages/shared-redis/
 COPY services/telegram-bot/package.json ./services/telegram-bot/
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 COPY packages/shared ./packages/shared
 COPY packages/shared-redis ./packages/shared-redis
